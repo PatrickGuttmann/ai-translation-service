@@ -21,8 +21,8 @@ Codex to execute.
 ## Current Phase
 
 ```txt
-Phase: 0.3
-Goal: Ollama Client
+Phase: 0.4
+Goal: Prompt Templates
 Status: Complete
 ```
 
@@ -709,7 +709,7 @@ Add controlled server-owned prompt templates for predictable translation behavio
 ## 0.4.1 — Add Translation Prompt Template
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: High
 ```
 
@@ -725,12 +725,12 @@ src/prompts/prompt-builder.ts
 Acceptance criteria:
 
 ```txt
-[ ] prompt instructs JSON-only output
-[ ] prompt instructs exact field-key preservation
-[ ] prompt instructs glossary handling
-[ ] prompt instructs Markdown/code/URL/placeholder preservation
-[ ] prompt includes sourceLocale and targetLocale
-[ ] prompt includes tone when provided
+[x] prompt instructs JSON-only output
+[x] prompt instructs exact field-key preservation
+[x] prompt instructs glossary handling
+[x] prompt instructs Markdown/code/URL/placeholder preservation
+[x] prompt includes sourceLocale and targetLocale
+[x] prompt includes tone when provided
 ```
 
 ---
@@ -738,7 +738,7 @@ Acceptance criteria:
 ## 0.4.2 — Add Repair Prompt Template
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: High
 ```
 
@@ -747,11 +747,11 @@ Add a bounded repair prompt for invalid model output.
 Acceptance criteria:
 
 ```txt
-[ ] repair prompt asks for valid JSON only
-[ ] expected field keys are listed
-[ ] malformed output is bounded before inclusion
-[ ] repair prompt does not expose secrets
-[ ] repair prompt is used only after first failure
+[x] repair prompt asks for valid JSON only
+[x] expected field keys are listed
+[x] malformed output is bounded before inclusion
+[x] repair prompt does not expose secrets
+[x] repair prompt is used only after first failure
 ```
 
 ---
@@ -759,7 +759,7 @@ Acceptance criteria:
 ## 0.4.3 — Add Prompt Builder Tests
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: Medium
 ```
 
@@ -768,11 +768,11 @@ Test prompt generation.
 Acceptance criteria:
 
 ```txt
-[ ] prompt contains locales
-[ ] prompt contains field keys
-[ ] prompt contains glossary when provided
-[ ] prompt contains JSON-only instruction
-[ ] prompt does not mutate input payload
+[x] prompt contains locales
+[x] prompt contains field keys
+[x] prompt contains glossary when provided
+[x] prompt contains JSON-only instruction
+[x] prompt does not mutate input payload
 ```
 
 ---

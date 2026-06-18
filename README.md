@@ -73,9 +73,16 @@ Implemented in Phase 0.3:
 - timeout, connection, non-2xx and invalid-response error normalization
 - mocked Ollama tests with no live model requirement
 
+Implemented in Phase 0.4:
+
+- server-owned translation and repair prompt templates
+- prompt builder for Ollama chat messages
+- bounded repair prompt input for invalid model output
+- prompt builder tests
+
 Live Ollama translation is not implemented yet. The translation route currently
 validates authenticated requests and returns a placeholder response. The Ollama
-client exists but is not wired into `POST /translate` yet.
+client and prompt builder exist but are not wired into `POST /translate` yet.
 
 Out of scope for the first version:
 
@@ -407,6 +414,18 @@ returns only the assistant message content.
 
 Automated tests mock Ollama behavior and do not require a live Ollama model.
 Live translation through `/translate` starts in a later phase.
+
+---
+
+## Prompt Templates
+
+Prompt templates live under `src/prompts/` and are server-owned,
+version-controlled code. The API does not expose arbitrary prompt editing.
+
+The prompt builder creates Ollama chat messages for normal translation and for
+repairing invalid model output. Repair prompts bound previous invalid output
+before including it. These prompts are tested, but they are not executed by
+`POST /translate` until the translation service is implemented later.
 
 ---
 

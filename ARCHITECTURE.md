@@ -268,7 +268,7 @@ No route should call Ollama directly.
 
 Contains server-owned prompt templates.
 
-Initial prompt goals:
+Responsibilities:
 
 - force JSON-only output
 - preserve field names
@@ -276,6 +276,8 @@ Initial prompt goals:
 - respect glossary mappings
 - keep tone consistent
 - prohibit explanations outside JSON
+- build normal translation Ollama chat messages
+- build bounded repair Ollama chat messages for invalid model output
 
 Prompt editing should remain code-owned in the first version.
 
@@ -522,9 +524,8 @@ extra_hosts:
 If Ollama runs in Docker, the service should connect through the Docker network
 to the Ollama container.
 
-The service remains stateless in Phase 0.3. The Ollama client exists and is
-tested with mocked provider responses, but `/translate` does not call Ollama
-yet.
+The service remains stateless in Phase 0.4. The Ollama client and prompt builder
+exist and are tested, but `/translate` does not call Ollama yet.
 
 ---
 
