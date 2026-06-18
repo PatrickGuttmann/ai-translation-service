@@ -511,6 +511,7 @@ The Compose baseline:
 
 - uses service and container name `ai-translation-service`
 - restarts with `unless-stopped`
+- defaults `NODE_ENV` to `production`
 - publishes `127.0.0.1:4100:4100` for local testing
 - reads environment values from Compose interpolation with safe defaults
 - includes no database service
@@ -530,6 +531,10 @@ to the Ollama container.
 The service remains stateless in Phase 0.6. `/translate` performs a synchronous
 Ollama call through the translation service, with at most one synchronous repair
 attempt for malformed model output. No database or queue is used.
+
+Runtime smoke checks are documented in `docs/runtime-smoke-checklist.md`.
+Live Ollama checks are manual runtime checks; automated tests use mocked
+provider behavior.
 
 ---
 

@@ -21,8 +21,8 @@ Codex to execute.
 ## Current Phase
 
 ```txt
-Phase: 0.6
-Goal: Retry and Repair
+Phase: 0.7
+Goal: Docker / Portainer Runtime
 Status: Complete
 ```
 
@@ -984,18 +984,18 @@ Make the service easy to deploy internally with Docker and Portainer.
 ## 0.7.1 — Review Dockerfile for Production Runtime
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: Medium
 ```
 
 Acceptance criteria:
 
 ```txt
-[ ] image builds
-[ ] production image runs compiled code
-[ ] dev dependencies are not required at runtime
-[ ] service listens on configured port
-[ ] no secrets are baked into image
+[x] image builds
+[x] production image runs compiled code
+[x] dev dependencies are not required at runtime
+[x] service listens on configured port
+[x] no secrets are baked into image
 ```
 
 ---
@@ -1003,18 +1003,18 @@ Acceptance criteria:
 ## 0.7.2 — Review Portainer Stack Shape
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: Medium
 ```
 
 Acceptance criteria:
 
 ```txt
-[ ] docker-compose.yml is Portainer-compatible
-[ ] environment variables are clear
-[ ] service is not publicly reverse-proxied
-[ ] Ollama host/container access is documented
-[ ] restart policy is set
+[x] docker-compose.yml is Portainer-compatible
+[x] environment variables are clear
+[x] service is not publicly reverse-proxied
+[x] Ollama host/container access is documented
+[x] restart policy is set
 ```
 
 ---
@@ -1022,7 +1022,7 @@ Acceptance criteria:
 ## 0.7.3 — Add Runtime Smoke Checklist
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: Medium
 ```
 
@@ -1031,11 +1031,11 @@ Document post-deployment checks.
 Acceptance criteria:
 
 ```txt
-[ ] health check command is documented
-[ ] unauthorized translate check is documented
-[ ] authorized translate check is documented
-[ ] Ollama connectivity check is documented
-[ ] failure expectations are documented
+[x] health check command is documented
+[x] unauthorized translate check is documented
+[x] authorized translate check is documented
+[x] Ollama connectivity check is documented
+[x] failure expectations are documented
 ```
 
 ---

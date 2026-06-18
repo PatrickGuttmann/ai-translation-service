@@ -5,7 +5,7 @@ services:
     container_name: ai-translation-service
     restart: unless-stopped
     environment:
-      NODE_ENV: ${NODE_ENV:-development}
+      NODE_ENV: ${NODE_ENV:-production}
       PORT: ${PORT:-4100}
       API_KEY: ${API_KEY:-DEV_SECRET_CHANGE_ME}
       OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
@@ -14,6 +14,8 @@ services:
       MAX_INPUT_CHARS: ${MAX_INPUT_CHARS:-12000}
       LOG_LEVEL: ${LOG_LEVEL:-info}
     ports:
+      # Localhost-only by default; do not add public reverse proxy labels here.
       - "127.0.0.1:4100:4100"
     extra_hosts:
+      # Lets the container reach Ollama on the Docker host.
       - "host.docker.internal:host-gateway"

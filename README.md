@@ -314,7 +314,7 @@ generic
 Copy `.env.example` to `.env` for local development.
 
 ```env
-NODE_ENV=development
+NODE_ENV=production
 PORT=4100
 
 API_KEY=DEV_SECRET_CHANGE_ME
@@ -346,14 +346,17 @@ docker compose up --build
 The compose service is named `ai-translation-service`, publishes
 `127.0.0.1:4100:4100` for local testing and does not include public reverse
 proxy labels. It includes `host.docker.internal:host-gateway` so a container can
-reach an Ollama instance running on the Docker host when live translation is
-implemented later.
+reach an Ollama instance running on the Docker host.
 
 Validate the compose file:
 
 ```bash
 docker compose config
 ```
+
+For repeatable Docker/Portainer runtime checks, use
+[docs/runtime-smoke-checklist.md](docs/runtime-smoke-checklist.md).
+Live Ollama smoke checks are manual and are not required for automated tests.
 
 ---
 
