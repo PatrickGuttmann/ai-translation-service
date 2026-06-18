@@ -18,6 +18,8 @@ boundaries before downstream application integration work begins.
 - Phase 0.7: Docker/Portainer runtime review and smoke checklist.
 - Phase 0.8: client integration contract, example client payloads and readiness
   documentation.
+- Phase 0.9: prompt-quality refinement, tone guidance refinement and runtime
+  model evaluation notes.
 
 ## API Contract Status
 
@@ -53,6 +55,17 @@ testing and includes host Ollama access through `host.docker.internal`.
 
 The runtime smoke path is documented in
 `docs/runtime-smoke-checklist.md`.
+
+## Prompt Quality Status
+
+The translation prompt now emphasizes preserving meaning rather than translating
+word by word, avoiding literal idiom translation, using natural target-language
+wording and preserving factual claims exactly. Tone guidance is bounded so tone
+can shape wording without changing facts.
+
+Manual model-quality findings are documented in
+`docs/model-evaluation-notes.md`. Current empirical guidance is
+`aya-expanse:8b` for quality and `qwen2.5:7b` as a faster fallback.
 
 ## Test Coverage Status
 

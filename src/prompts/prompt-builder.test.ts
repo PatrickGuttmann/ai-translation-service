@@ -13,8 +13,8 @@ const request: TranslateRequest = {
   },
   tone: "personal-technical",
   glossary: {
-    Devlog: "Devlog",
-    Alpendorf: "Alpendorf"
+    API: "API",
+    Ollama: "Ollama"
   }
 };
 
@@ -48,8 +48,8 @@ describe("buildTranslationMessages", () => {
   it("contains glossary terms when provided", () => {
     const text = messageText(buildTranslationMessages(request));
 
-    expect(text).toContain('"Devlog": "Devlog"');
-    expect(text).toContain('"Alpendorf": "Alpendorf"');
+    expect(text).toContain('"API": "API"');
+    expect(text).toContain('"Ollama": "Ollama"');
   });
 
   it("contains tone when provided", () => {
@@ -62,6 +62,47 @@ describe("buildTranslationMessages", () => {
     buildTranslationMessages(request);
 
     expect(request).toEqual(original);
+  });
+
+  it("contains meaning-preserving translation instructions", () => {
+    const text = messageText(buildTranslationMessages(request));
+
+    expect(text).toContain("Translate meaning, not word by word");
+    expect(text).toContain("Preserve factual meaning exactly");
+  });
+
+  it("discourages literal idiom translation", () => {
+    const text = messageText(buildTranslationMessages(request));
+
+    expect(text).toContain("Do not reinterpret idioms or fixed phrases literally");
+  });
+
+  it("requires natural target-language wording", () => {
+    const text = messageText(buildTranslationMessages(request));
+
+    expect(text).toContain("Use natural target-language syntax and wording");
+    expect(text).toContain("journalistic or formal wording");
+  });
+
+  it("forbids adding or removing claims", () => {
+    const text = messageText(buildTranslationMessages(request));
+
+    expect(text).toContain("Do not add claims, remove claims, soften claims, or strengthen claims");
+  });
+
+  it("preserves exact JSON field key behavior", () => {
+    const text = messageText(buildTranslationMessages(request));
+
+    expect(text).toContain("Return valid JSON only");
+    expect(text).toContain("Preserve all field names exactly");
+    expect(text).toContain("Do not add new fields");
+  });
+
+  it("clarifies supported tone guidance without changing facts", () => {
+    const text = messageText(buildTranslationMessages(request));
+
+    expect(text).toContain("Keep tone consistent with the requested tone without changing facts");
+    expect(text).toContain("For personal-technical tone, use clear, natural wording that is not marketing-heavy");
   });
 });
 
@@ -100,5 +141,17 @@ describe("buildRepairMessages", () => {
 
     expect(text).toContain("[truncated]");
     expect(text).not.toContain("x".repeat(4500));
+  });
+
+  it("preserves meaning during repair without simplifying claims", () => {
+    const text = messageText(
+      buildRepairMessages({
+        expectedFieldKeys: ["title"],
+        invalidOutput: "{ nope"
+      })
+    );
+
+    expect(text).toContain("Preserve content meaning exactly");
+    expect(text).toContain("Do not simplify, summarize, add claims, or remove claims during repair");
   });
 });

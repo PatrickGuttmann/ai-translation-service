@@ -132,6 +132,7 @@ ai-translation-service/
 ├── docs/
 │   ├── examples/
 │   ├── client-integration-contract.md
+│   ├── model-evaluation-notes.md
 │   ├── runtime-smoke-checklist.md
 │   └── service-readiness-review.md
 ├── .env.example
@@ -406,6 +407,10 @@ Initial system prompt:
 You are a translation engine. Translate the provided JSON fields from the source locale to the target locale.
 
 Rules:
+- Translate meaning, not word by word.
+- Preserve factual meaning exactly.
+- Use natural target-language syntax.
+- Do not add or remove claims.
 - Return valid JSON only.
 - Preserve all field names exactly.
 - Do not add explanations.
@@ -539,6 +544,11 @@ malformed model output. No database or queue is used.
 Runtime smoke checks are documented in `docs/runtime-smoke-checklist.md`.
 Live Ollama checks are manual runtime checks; automated tests use mocked
 provider behavior.
+
+Prompt-quality findings from manual model tests are documented in
+`docs/model-evaluation-notes.md`. Current empirical guidance is
+`aya-expanse:8b` for better translation quality and `qwen2.5:7b` as a fast
+fallback. These notes do not change the API contract or service boundary.
 
 Client integration planning is documented in
 `docs/client-integration-contract.md`, with example request payloads under

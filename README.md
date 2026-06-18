@@ -101,6 +101,12 @@ Implemented in Phase 0.8:
 - example client translation payloads
 - final service readiness review
 
+Implemented in Phase 0.9:
+
+- translation prompt quality refinement
+- tone guidance refinement
+- runtime model evaluation notes
+
 Provider failures such as timeouts and unavailable Ollama responses are not
 repair-retried. Invalid model output returns `MODEL_OUTPUT_INVALID` if the one
 repair attempt also fails.
@@ -166,6 +172,7 @@ ai-translation-service/
 ├── docs/
 │   ├── examples/
 │   ├── client-integration-contract.md
+│   ├── model-evaluation-notes.md
 │   ├── runtime-smoke-checklist.md
 │   └── service-readiness-review.md
 ├── .env.example
@@ -432,6 +439,7 @@ Integration references:
 
 - [docs/client-integration-contract.md](docs/client-integration-contract.md)
 - [docs/examples/](docs/examples/)
+- [docs/model-evaluation-notes.md](docs/model-evaluation-notes.md)
 - [docs/service-readiness-review.md](docs/service-readiness-review.md)
 
 The consuming application should store returned fields as machine translations,
@@ -462,6 +470,15 @@ The prompt builder creates Ollama chat messages for normal translation and for
 repairing invalid model output. Repair prompts bound previous invalid output
 before including it. Normal translation prompts and repair prompts are used by
 the translation service.
+
+The translation prompt favors meaning-preserving translation over word-by-word
+rendering, discourages literal idiom translation and asks for natural
+target-language wording without adding or removing claims.
+
+Manual model-quality findings are documented in
+[docs/model-evaluation-notes.md](docs/model-evaluation-notes.md). Current
+practical guidance is `aya-expanse:8b` when quality matters and `qwen2.5:7b` as
+a faster fallback.
 
 ---
 
@@ -585,7 +602,7 @@ curl -i -X POST http://localhost:4100/translate \
     "contentType": "managed-page-section",
     "fields": {
       "title": "Kontakt",
-      "body": "Schreib mir, wenn du Fragen zu meinen Projekten hast."
+      "body": "Schreib uns, wenn du Fragen zur Dokumentation hast."
     },
     "tone": "personal-technical",
     "glossary": {

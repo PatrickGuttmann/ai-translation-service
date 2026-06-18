@@ -21,8 +21,8 @@ Codex to execute.
 ## Current Phase
 
 ```txt
-Phase: 0.8
-Goal: Client Integration Preparation
+Phase: 0.9
+Goal: Translation Quality Prompt Refinement
 Status: Complete
 Initial service foundation: Integration-ready
 ```
@@ -1118,4 +1118,123 @@ Acceptance criteria:
 [x] tests cover mocked provider behavior
 [x] live Ollama smoke path is documented
 [x] no database or queue was added prematurely
+```
+
+---
+
+# Phase 0.9 — Translation Quality Prompt Refinement
+
+Goal:
+
+```txt
+Improve translation quality through prompt refinement and documented model observations without changing the API contract.
+```
+
+---
+
+## 0.9.1 — Plan Prompt Quality Refinement
+
+```txt
+Status: [x]
+Priority: Medium
+```
+
+Acceptance criteria:
+
+```txt
+[x] observed weaknesses are documented
+[x] quality goals are defined
+[x] API contract remains stable
+```
+
+---
+
+## 0.9.2 — Refine Translation Prompt
+
+```txt
+Status: [x]
+Priority: High
+```
+
+Acceptance criteria:
+
+```txt
+[x] meaning-preserving translation instructions are added
+[x] literal idiom translation is discouraged
+[x] natural target-language wording is required
+[x] factual meaning must be preserved
+[x] adding or removing claims is forbidden
+[x] JSON-only output and exact field keys remain required
+```
+
+---
+
+## 0.9.3 — Refine Tone Guidance
+
+```txt
+Status: [x]
+Priority: Medium
+```
+
+Acceptance criteria:
+
+```txt
+[x] supported tones are clarified
+[x] tone may influence wording without changing facts
+[x] personal-technical tone stays clear, natural and not marketing-heavy
+```
+
+---
+
+## 0.9.4 — Add Prompt Quality Tests
+
+```txt
+Status: [x]
+Priority: Medium
+```
+
+Acceptance criteria:
+
+```txt
+[x] prompt includes meaning-preserving instruction
+[x] prompt discourages literal idiom translation
+[x] prompt requires natural target-language syntax
+[x] prompt forbids adding or removing claims
+[x] prompt preserves JSON-only output and exact field keys
+```
+
+---
+
+## 0.9.5 — Document Runtime Model Findings
+
+```txt
+Status: [x]
+Priority: Medium
+```
+
+Acceptance criteria:
+
+```txt
+[x] aya-expanse:8b observations are documented
+[x] qwen2.5:7b observations are documented
+[x] gemma3:12b observations are documented
+[x] default and fallback recommendations are documented
+[x] findings are described as empirical and environment-specific
+```
+
+---
+
+## 0.9.6 — Final Prompt Quality Review
+
+```txt
+Status: [x]
+Priority: Medium
+```
+
+Acceptance criteria:
+
+```txt
+[x] no API, schema or runtime architecture change was made
+[x] tests pass
+[x] automated tests do not require live Ollama
 ```
