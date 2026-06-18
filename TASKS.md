@@ -236,7 +236,7 @@ Acceptance criteria:
 ## 0.1.5 — Add API Key Middleware
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: High
 ```
 
@@ -257,12 +257,12 @@ src/security/api-key.ts
 Acceptance criteria:
 
 ```txt
-[ ] valid API key is accepted
-[ ] missing API key is rejected
-[ ] invalid API key is rejected
-[ ] rejected requests return structured 401
-[ ] API key is never logged
-[ ] middleware tests cover missing, invalid and valid key behavior
+[x] valid API key is accepted
+[x] missing API key is rejected
+[x] invalid API key is rejected
+[x] rejected requests return structured 401
+[x] API key is never logged
+[x] middleware tests cover missing, invalid and valid key behavior
 ```
 
 ---
@@ -270,7 +270,7 @@ Acceptance criteria:
 ## 0.1.6 — Add Placeholder Translate Route
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: High
 ```
 
@@ -299,12 +299,12 @@ src/routes/translate.routes.ts
 Acceptance criteria:
 
 ```txt
-[ ] route exists
-[ ] route requires API key
-[ ] unauthenticated requests fail
-[ ] authenticated requests return placeholder response
-[ ] route tests cover unauthenticated and authenticated behavior
-[ ] no Ollama call is added yet
+[x] route exists
+[x] route requires API key
+[x] unauthenticated requests fail
+[x] authenticated requests return placeholder response
+[x] route tests cover unauthenticated and authenticated behavior
+[x] no Ollama call is added yet
 ```
 
 ---
@@ -312,7 +312,7 @@ Acceptance criteria:
 ## 0.1.7 — Add Error Response Baseline
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: Medium
 ```
 
@@ -332,11 +332,11 @@ Preferred shape:
 Acceptance criteria:
 
 ```txt
-[ ] unauthorized errors use structured shape
-[ ] unexpected errors use safe structured shape
-[ ] stack traces are not exposed in production responses
-[ ] error codes are stable enough for callers
-[ ] error response tests cover at least unauthorized and unexpected error paths where practical
+[x] unauthorized errors use structured shape
+[x] unexpected errors use safe structured shape
+[x] stack traces are not exposed in production responses
+[x] error codes are stable enough for callers
+[x] error response tests cover at least unauthorized and unexpected error paths where practical
 ```
 
 ---
