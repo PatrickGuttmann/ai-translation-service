@@ -128,6 +128,11 @@ ai-translation-service/
 │       └── logger.ts
 ├── Dockerfile
 ├── docker-compose.yml
+├── docs/
+│   ├── examples/
+│   ├── runtime-smoke-checklist.md
+│   ├── service-readiness-review.md
+│   └── website-client-contract.md
 ├── .env.example
 ├── README.md
 ├── ARCHITECTURE.md
@@ -387,7 +392,6 @@ OLLAMA_UNAVAILABLE
 OLLAMA_TIMEOUT
 OLLAMA_INVALID_RESPONSE
 MODEL_OUTPUT_INVALID
-TRANSLATION_FAILED
 INTERNAL_ERROR
 ```
 
@@ -528,13 +532,20 @@ extra_hosts:
 If Ollama runs in Docker, the service should connect through the Docker network
 to the Ollama container.
 
-The service remains stateless in Phase 0.6. `/translate` performs a synchronous
-Ollama call through the translation service, with at most one synchronous repair
-attempt for malformed model output. No database or queue is used.
+The service remains stateless. `/translate` performs a synchronous Ollama call
+through the translation service, with at most one synchronous repair attempt for
+malformed model output. No database or queue is used.
 
 Runtime smoke checks are documented in `docs/runtime-smoke-checklist.md`.
 Live Ollama checks are manual runtime checks; automated tests use mocked
 provider behavior.
+
+Website integration planning is documented in
+`docs/website-client-contract.md`, with example request payloads under
+`docs/examples/` and readiness notes in `docs/service-readiness-review.md`.
+The service remains stateless and integration-ready: it returns translated
+fields to the caller but does not store data, mutate website records or publish
+content.
 
 ---
 

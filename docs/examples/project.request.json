@@ -1,0 +1,17 @@
+{
+  "sourceLocale": "de",
+  "targetLocale": "en",
+  "contentType": "project",
+  "fields": {
+    "title": "Interner Übersetzungsdienst",
+    "summary": "Ein stateless Node.js-Service, der strukturierte Inhaltsfelder über ein lokales Ollama-Modell übersetzt.",
+    "body": "Das Projekt trennt Website-Logik von KI-Orchestrierung. Prompts, Timeouts, Validierung und Reparaturversuche bleiben im Dienst.",
+    "role": "Konzeption, Backend-Entwicklung und Docker-Runtime"
+  },
+  "tone": "professional",
+  "glossary": {
+    "Ollama": "Ollama",
+    "Portainer": "Portainer",
+    "stateless": "stateless"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "sourceLocale": "de",
+  "targetLocale": "en",
+  "contentType": "managed-page",
+  "fields": {
+    "title": "Über mich",
+    "intro": "Ich baue ruhige, robuste Webanwendungen mit klarer Architektur.",
+    "metaDescription": "Ein kurzer Überblick über Patrick, seine Arbeitsweise und ausgewählte Projekte."
+  },
+  "tone": "personal-technical",
+  "glossary": {
+    "Devlog": "Devlog",
+    "Full-Stack": "full-stack"
+  }
+}

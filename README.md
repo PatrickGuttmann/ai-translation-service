@@ -95,6 +95,12 @@ Implemented in Phase 0.6:
 - full-operation `durationMs` including repair attempts
 - explicit retry boundary tests
 
+Implemented in Phase 0.8:
+
+- website client contract for future `patrick-dev-site` integration
+- example website translation payloads
+- final service readiness review
+
 Provider failures such as timeouts and unavailable Ollama responses are not
 repair-retried. Invalid model output returns `MODEL_OUTPUT_INVALID` if the one
 repair attempt also fails.
@@ -157,6 +163,11 @@ ai-translation-service/
 │       └── logger.ts
 ├── Dockerfile
 ├── docker-compose.yml
+├── docs/
+│   ├── examples/
+│   ├── runtime-smoke-checklist.md
+│   ├── service-readiness-review.md
+│   └── website-client-contract.md
 ├── .env.example
 ├── README.md
 ├── ARCHITECTURE.md
@@ -368,7 +379,7 @@ Health:
 curl -i http://localhost:4100/health
 ```
 
-Unauthorized placeholder translate:
+Unauthorized translate:
 
 ```bash
 curl -i -X POST http://localhost:4100/translate \
@@ -376,7 +387,7 @@ curl -i -X POST http://localhost:4100/translate \
   -d '{}'
 ```
 
-Authorized placeholder translate:
+Authorized translate:
 
 ```bash
 curl -i -X POST http://localhost:4100/translate \
@@ -409,6 +420,22 @@ If the first model output is invalid JSON, lacks the `fields` wrapper, has
 missing/extra field keys or has non-string field values, the service makes one
 synchronous repair attempt using a bounded repair prompt. It does not use a
 queue or background worker.
+
+---
+
+## Website Integration Docs
+
+The service is ready for `patrick-dev-site` integration planning. It remains
+stateless and does not include website code.
+
+Integration references:
+
+- [docs/website-client-contract.md](docs/website-client-contract.md)
+- [docs/examples/](docs/examples/)
+- [docs/service-readiness-review.md](docs/service-readiness-review.md)
+
+The website should store returned fields as machine translations, preserve its
+own source freshness metadata and require human review before publishing.
 
 ---
 

@@ -21,9 +21,10 @@ Codex to execute.
 ## Current Phase
 
 ```txt
-Phase: 0.7
-Goal: Docker / Portainer Runtime
+Phase: 0.8
+Goal: Website Integration Preparation
 Status: Complete
+Initial service foundation: Integration-ready
 ```
 
 ---
@@ -1053,7 +1054,7 @@ Prepare the integration contract for patrick-dev-site without implementing websi
 ## 0.8.1 — Document Website Client Contract
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: High
 ```
 
@@ -1069,11 +1070,11 @@ TRANSLATION_SERVICE_API_KEY=change-me
 Acceptance criteria:
 
 ```txt
-[ ] request/response examples are documented
-[ ] auth header is documented
-[ ] error handling expectations are documented
-[ ] machine status workflow expectation is documented
-[ ] no website code is changed in this repository
+[x] request/response examples are documented
+[x] auth header is documented
+[x] error handling expectations are documented
+[x] machine status workflow expectation is documented
+[x] no website code is changed in this repository
 ```
 
 ---
@@ -1081,7 +1082,7 @@ Acceptance criteria:
 ## 0.8.2 — Add Example Website Payloads
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: Medium
 ```
 
@@ -1090,11 +1091,11 @@ Add examples for the first content types.
 Acceptance criteria:
 
 ```txt
-[ ] managed page example exists
-[ ] managed page section example exists
-[ ] project example exists
-[ ] Devlog example exists
-[ ] Thai target example exists
+[x] managed page example exists
+[x] managed page section example exists
+[x] project example exists
+[x] Devlog example exists
+[x] Thai target example exists
 ```
 
 ---
@@ -1102,7 +1103,7 @@ Acceptance criteria:
 ## 0.8.3 — Final Service Readiness Review
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: Medium
 ```
 
@@ -1111,10 +1112,10 @@ Review service readiness before integrating into `patrick-dev-site`.
 Acceptance criteria:
 
 ```txt
-[ ] API contract is stable enough for a website client
-[ ] security boundary is documented
-[ ] model/output failure behavior is documented
-[ ] tests cover mocked provider behavior
-[ ] live Ollama smoke path is documented
-[ ] no database or queue was added prematurely
+[x] API contract is stable enough for a website client
+[x] security boundary is documented
+[x] model/output failure behavior is documented
+[x] tests cover mocked provider behavior
+[x] live Ollama smoke path is documented
+[x] no database or queue was added prematurely
 ```

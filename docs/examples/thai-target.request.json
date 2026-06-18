@@ -1,0 +1,15 @@
+{
+  "sourceLocale": "de",
+  "targetLocale": "th",
+  "contentType": "managed-page-section",
+  "fields": {
+    "headline": "Kontakt",
+    "body": "Schreib mir, wenn du Fragen zu meinen Projekten hast oder über eine Zusammenarbeit sprechen möchtest.",
+    "ctaLabel": "Nachricht senden"
+  },
+  "tone": "personal-technical",
+  "glossary": {
+    "Patrick": "Patrick",
+    "Devlog": "Devlog"
+  }
+}
