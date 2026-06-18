@@ -1,0 +1,19 @@
+services:
+  ai-translation-service:
+    build:
+      context: .
+    container_name: ai-translation-service
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: ${PORT:-4100}
+      API_KEY: ${API_KEY:-DEV_SECRET_CHANGE_ME}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:7b}
+      REQUEST_TIMEOUT_MS: ${REQUEST_TIMEOUT_MS:-60000}
+      MAX_INPUT_CHARS: ${MAX_INPUT_CHARS:-12000}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+    ports:
+      - "127.0.0.1:4100:4100"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

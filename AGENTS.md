@@ -75,6 +75,9 @@ Prefer completing one task from `TASKS.md` at a time.
 
 Do not combine unrelated features in one change.
 
+Use npm for this repository. Do not introduce pnpm, Yarn or Bun lockfiles unless
+the user explicitly requests a package-manager migration.
+
 When environment variables change, update `.env.example` in the same task.
 
 When deployment behavior, ports, service names or network exposure changes,

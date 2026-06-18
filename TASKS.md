@@ -23,7 +23,7 @@ Codex to execute.
 ```txt
 Phase: 0.1
 Goal: Service Foundation
-Status: In progress
+Status: Complete
 ```
 
 ---
@@ -344,7 +344,7 @@ Acceptance criteria:
 ## 0.1.8 — Add Docker Baseline
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: High
 ```
 
@@ -370,12 +370,12 @@ no public reverse proxy labels
 Acceptance criteria:
 
 ```txt
-[ ] Dockerfile exists
-[ ] docker-compose.yml exists
-[ ] docker compose config passes
-[ ] service exposes only the intended local/internal port
-[ ] environment variables are used
-[ ] no public reverse proxy labels are added
+[x] Dockerfile exists
+[x] docker-compose.yml exists
+[x] docker compose config passes
+[x] service exposes only the intended local/internal port
+[x] environment variables are used
+[x] no public reverse proxy labels are added
 ```
 
 ---
@@ -383,7 +383,7 @@ Acceptance criteria:
 ## 0.1.9 — Add Environment Example
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: High
 ```
 
@@ -409,10 +409,10 @@ LOG_LEVEL=info
 Acceptance criteria:
 
 ```txt
-[ ] .env.example exists
-[ ] all required variables are documented
-[ ] no real secrets are included
-[ ] Docker Compose variables match the example
+[x] .env.example exists
+[x] all required variables are documented
+[x] no real secrets are included
+[x] Docker Compose variables match the example
 ```
 
 ---
@@ -420,7 +420,7 @@ Acceptance criteria:
 ## 0.1.10 — Add Documentation Baseline
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: High
 ```
 
@@ -438,11 +438,11 @@ TASKS.md
 Acceptance criteria:
 
 ```txt
-[ ] README explains purpose, setup, API and local smoke checks
-[ ] ARCHITECTURE explains service boundary and module responsibilities
-[ ] AGENTS defines AI coding rules and forbidden early additions
-[ ] TASKS tracks phases and next work
-[ ] documents do not contradict each other
+[x] README explains purpose, setup, API and local smoke checks
+[x] ARCHITECTURE explains service boundary and module responsibilities
+[x] AGENTS defines AI coding rules and forbidden early additions
+[x] TASKS tracks phases and next work
+[x] documents do not contradict each other
 ```
 
 ---
@@ -450,7 +450,7 @@ Acceptance criteria:
 ## 0.1.11 — Verify Service Foundation
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: High
 ```
 
@@ -484,14 +484,14 @@ curl -i -X POST http://localhost:4100/translate \
 Acceptance criteria:
 
 ```txt
-[ ] typecheck passes
-[ ] tests pass
-[ ] build passes
-[ ] docker compose config passes
-[ ] GET /health works locally
-[ ] POST /translate rejects missing API key
-[ ] POST /translate accepts valid API key
-[ ] Phase 0.1 can be marked complete
+[x] typecheck passes
+[x] tests pass
+[x] build passes
+[x] docker compose config passes
+[x] GET /health works locally
+[x] POST /translate rejects missing API key
+[x] POST /translate accepts valid API key
+[x] Phase 0.1 can be marked complete
 ```
 
 ---

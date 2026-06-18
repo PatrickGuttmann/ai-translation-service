@@ -201,10 +201,13 @@ Defines `POST /translate`.
 Responsibilities:
 
 - require API key
+- return the Phase 0.1 placeholder response
+- return structured errors
+
+Future responsibilities:
+
 - validate request body
 - call translation service
-- return structured response
-- return structured errors
 
 ---
 
@@ -478,7 +481,18 @@ Internal port:
 4100
 ```
 
-No public reverse proxy labels should be added by default.
+The Docker image builds the TypeScript project and runs `dist/server.js` with
+production dependencies installed through `npm ci --omit=dev`.
+
+The Compose baseline:
+
+- uses service and container name `ai-translation-service`
+- restarts with `unless-stopped`
+- publishes `127.0.0.1:4100:4100` for local testing
+- reads environment values from Compose interpolation with safe defaults
+- includes no database service
+- includes no queue service
+- includes no public reverse proxy labels
 
 If Ollama runs on host:
 
@@ -489,6 +503,9 @@ extra_hosts:
 
 If Ollama runs in Docker, the service should connect through the Docker network
 to the Ollama container.
+
+The service remains stateless in Phase 0.1 and does not perform live Ollama
+translation yet.
 
 ---
 

@@ -33,7 +33,7 @@ generic document translation platform.
 
 ## Current Scope
 
-Initial scope:
+Initial target scope:
 
 - internal HTTP API
 - Fastify server
@@ -47,6 +47,19 @@ Initial scope:
 - max input length protection
 - Docker/Portainer-compatible deployment
 - API key protection between internal callers and this service
+
+Implemented in Phase 0.1:
+
+- Fastify/TypeScript service foundation
+- Zod environment configuration
+- `GET /health`
+- protected placeholder `POST /translate`
+- structured baseline error responses
+- Vitest test baseline
+- Docker Compose runtime baseline
+
+Live Ollama translation is not implemented yet in Phase 0.1. The translation
+route currently returns a placeholder response after API key authentication.
 
 Out of scope for the first version:
 
@@ -115,6 +128,40 @@ ai-translation-service/
 
 ---
 
+## Setup
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Copy the environment example for local development:
+
+```bash
+cp .env.example .env
+```
+
+Run the development server:
+
+```bash
+npm run dev
+```
+
+Useful npm commands:
+
+```bash
+npm run typecheck
+npm test
+npm run build
+npm start
+```
+
+This repository uses npm. Do not create pnpm, Yarn or Bun lockfiles unless that
+is explicitly requested.
+
+---
+
 ## API
 
 ### `GET /health`
@@ -141,7 +188,24 @@ Protected by:
 Authorization: Bearer <API_KEY>
 ```
 
-Example request:
+Phase 0.1 placeholder request:
+
+```bash
+curl -i -X POST http://localhost:4100/translate \
+  -H "Authorization: Bearer DEV_SECRET_CHANGE_ME" \
+  -H "Content-Type: application/json" \
+  -d '{}'
+```
+
+Phase 0.1 placeholder response:
+
+```json
+{
+  "status": "not_implemented"
+}
+```
+
+Future translation request:
 
 ```json
 {
@@ -160,7 +224,7 @@ Example request:
 }
 ```
 
-Example response:
+Future translation response:
 
 ```json
 {
@@ -222,7 +286,7 @@ PORT=4100
 
 API_KEY=DEV_SECRET_CHANGE_ME
 
-OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_BASE_URL=http://host.docker.internal:11434
 OLLAMA_MODEL=qwen2.5:7b
 
 REQUEST_TIMEOUT_MS=60000
@@ -235,6 +299,74 @@ Never commit real secrets.
 
 Production or LAN deployments should provide secrets through Portainer
 environment variables or another private environment source.
+
+---
+
+## Docker Compose
+
+Build and start the service:
+
+```bash
+docker compose up --build
+```
+
+The compose service is named `ai-translation-service`, publishes
+`127.0.0.1:4100:4100` for local testing and does not include public reverse
+proxy labels. It includes `host.docker.internal:host-gateway` so a container can
+reach an Ollama instance running on the Docker host when live translation is
+implemented later.
+
+Validate the compose file:
+
+```bash
+docker compose config
+```
+
+---
+
+## Local Smoke Checks
+
+Health:
+
+```bash
+curl -i http://localhost:4100/health
+```
+
+Unauthorized placeholder translate:
+
+```bash
+curl -i -X POST http://localhost:4100/translate \
+  -H "Content-Type: application/json" \
+  -d '{}'
+```
+
+Authorized placeholder translate:
+
+```bash
+curl -i -X POST http://localhost:4100/translate \
+  -H "Authorization: Bearer DEV_SECRET_CHANGE_ME" \
+  -H "Content-Type: application/json" \
+  -d '{}'
+```
+
+Expected authorized placeholder response:
+
+```json
+{
+  "status": "not_implemented"
+}
+```
+
+---
+
+## Security
+
+This service is internal-only. Do not expose it through public reverse proxy,
+Cloudflare Tunnel or browser-facing routes by default. `GET /health` is
+unauthenticated for private-network health checks; `POST /translate` requires
+`Authorization: Bearer <API_KEY>`.
+
+Never commit real secrets.
 
 ---
 
