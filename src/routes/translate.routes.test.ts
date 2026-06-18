@@ -3,9 +3,9 @@ import { describe, expect, it, vi } from "vitest";
 import { createApp } from "../app.js";
 import { loadConfig } from "../config.js";
 import { type ErrorResponse } from "../errors.js";
-import { OllamaClientError } from "../ollama/ollama.client.js";
+import { OllamaClientError, type OllamaClient } from "../ollama/ollama.client.js";
 import { type HealthResponse } from "./health.routes.js";
-import { TranslateServiceError, type TranslateService } from "../translation/translate.service.js";
+import { createTranslateService, TranslateServiceError, type TranslateService } from "../translation/translate.service.js";
 import { type TranslateResponse } from "../translation/translate.types.js";
 
 const apiKey = "TEST_SECRET";
@@ -218,6 +218,37 @@ describe("POST /translate", () => {
         code: "MODEL_OUTPUT_INVALID",
         message: "Model output invalid"
       }
+    });
+  });
+
+  it("returns repaired output warnings from the real translate service", async () => {
+    const config = loadConfig({ NODE_ENV: "test", API_KEY: apiKey, OLLAMA_MODEL: "test-model" });
+    const outputs = ["{ nope", '{"fields":{"title":"Contact","body":"Write to me..."}}'];
+    const ollamaClient: OllamaClient = {
+      async chat() {
+        return outputs.shift() ?? '{"fields":{"title":"Contact","body":"Write to me..."}}';
+      }
+    };
+    const app = createApp(config, {
+      translateService: createTranslateService(config, ollamaClient)
+    });
+
+    const response = await app.inject({
+      method: "POST",
+      url: "/translate",
+      headers: {
+        authorization: `Bearer ${apiKey}`
+      },
+      payload: validPayload
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.json<TranslateResponse>()).toMatchObject({
+      fields: {
+        title: "Contact",
+        body: "Write to me..."
+      },
+      warnings: ["model_output_repaired"]
     });
   });
 

@@ -236,11 +236,8 @@ Responsibilities:
 - select prompt template
 - call Ollama client
 - parse response
+- retry repair once for invalid model output shape
 - assemble warnings and duration metadata
-
-Future responsibilities:
-
-- retry repair where allowed
 
 ---
 
@@ -359,7 +356,11 @@ The model is expected to return this wrapper shape:
 }
 ```
 
-Retry and repair for invalid model output begins in a later phase.
+If the first model output is invalid JSON, is missing the `fields` wrapper, has
+missing or extra translated field keys or includes non-string translated values,
+the service performs exactly one repair attempt with the bounded repair prompt.
+Provider errors such as `OLLAMA_TIMEOUT` and `OLLAMA_UNAVAILABLE` are not
+repair-retried.
 
 ---
 
@@ -417,14 +418,14 @@ the result before returning it.
 
 ## Retry and Repair Strategy
 
-Initial retry behavior:
+Retry behavior:
 
 ```txt
 attempt 1: normal translation prompt
 attempt 2: repair prompt if JSON parsing failed or required keys are missing
 ```
 
-No endless retry loop.
+No endless retry loop and no background queue exists.
 
 Repair prompt should include:
 
@@ -526,8 +527,9 @@ extra_hosts:
 If Ollama runs in Docker, the service should connect through the Docker network
 to the Ollama container.
 
-The service remains stateless in Phase 0.5. `/translate` performs a synchronous
-Ollama call through the translation service. No database or queue is used.
+The service remains stateless in Phase 0.6. `/translate` performs a synchronous
+Ollama call through the translation service, with at most one synchronous repair
+attempt for malformed model output. No database or queue is used.
 
 ---
 

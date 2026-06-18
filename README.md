@@ -88,8 +88,16 @@ Implemented in Phase 0.5:
 - translated field key validation before responding
 - mocked route/service tests for provider and model-output failures
 
-Retry and repair behavior is not implemented yet. Invalid model output currently
-returns a structured `MODEL_OUTPUT_INVALID` error.
+Implemented in Phase 0.6:
+
+- one bounded repair retry for invalid model output
+- repair warnings in successful responses
+- full-operation `durationMs` including repair attempts
+- explicit retry boundary tests
+
+Provider failures such as timeouts and unavailable Ollama responses are not
+repair-retried. Invalid model output returns `MODEL_OUTPUT_INVALID` if the one
+repair attempt also fails.
 
 Out of scope for the first version:
 
@@ -254,6 +262,12 @@ Translation response:
 }
 ```
 
+If malformed model output is repaired successfully, `warnings` includes:
+
+```json
+["model_output_repaired"]
+```
+
 ---
 
 ## Translation Contract
@@ -388,6 +402,11 @@ Expected model output shape:
 The service parses that model output, validates field keys and returns the
 `TranslateResponse` shape shown above.
 
+If the first model output is invalid JSON, lacks the `fields` wrapper, has
+missing/extra field keys or has non-string field values, the service makes one
+synchronous repair attempt using a bounded repair prompt. It does not use a
+queue or background worker.
+
 ---
 
 ## Ollama Client
@@ -410,8 +429,8 @@ version-controlled code. The API does not expose arbitrary prompt editing.
 
 The prompt builder creates Ollama chat messages for normal translation and for
 repairing invalid model output. Repair prompts bound previous invalid output
-before including it. Normal translation prompts are used by the translation
-service; repair prompts are reserved for Phase 0.6.
+before including it. Normal translation prompts and repair prompts are used by
+the translation service.
 
 ---
 

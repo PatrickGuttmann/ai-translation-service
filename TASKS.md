@@ -21,8 +21,8 @@ Codex to execute.
 ## Current Phase
 
 ```txt
-Phase: 0.5
-Goal: Real Translation Endpoint
+Phase: 0.6
+Goal: Retry and Repair
 Status: Complete
 ```
 
@@ -892,7 +892,7 @@ Make malformed model output recoverable without adding a queue or endless retrie
 ## 0.6.1 — Retry Invalid JSON Once
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: Medium
 ```
 
@@ -901,10 +901,10 @@ Retry once when model output is not parseable JSON.
 Acceptance criteria:
 
 ```txt
-[ ] invalid JSON triggers one repair attempt
-[ ] second invalid JSON fails safely
-[ ] warnings include repair attempt info
-[ ] no infinite retry loop exists
+[x] invalid JSON triggers one repair attempt
+[x] second invalid JSON fails safely
+[x] warnings include repair attempt info
+[x] no infinite retry loop exists
 ```
 
 ---
@@ -912,7 +912,7 @@ Acceptance criteria:
 ## 0.6.2 — Retry Missing or Extra Fields Once
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: Medium
 ```
 
@@ -921,11 +921,11 @@ Retry once when translated keys do not match requested keys.
 Acceptance criteria:
 
 ```txt
-[ ] missing key triggers repair attempt
-[ ] extra key triggers repair attempt
-[ ] non-string value triggers repair attempt
-[ ] second invalid output fails safely
-[ ] warnings describe repair behavior
+[x] missing key triggers repair attempt
+[x] extra key triggers repair attempt
+[x] non-string value triggers repair attempt
+[x] second invalid output fails safely
+[x] warnings describe repair behavior
 ```
 
 ---
@@ -933,7 +933,7 @@ Acceptance criteria:
 ## 0.6.3 — Add Duration and Warning Metadata
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: Medium
 ```
 
@@ -942,11 +942,11 @@ Ensure responses include useful metadata.
 Acceptance criteria:
 
 ```txt
-[ ] durationMs is measured
-[ ] model name is returned
-[ ] warnings array exists for all success responses
-[ ] repair warnings are represented
-[ ] non-fatal normalization warnings can be added later
+[x] durationMs is measured
+[x] model name is returned
+[x] warnings array exists for all success responses
+[x] repair warnings are represented
+[x] non-fatal normalization warnings can be added later
 ```
 
 ---
@@ -954,7 +954,7 @@ Acceptance criteria:
 ## 0.6.4 — Review Retry Boundaries
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: Low
 ```
 
@@ -963,10 +963,10 @@ Review retry behavior before adding more advanced job handling.
 Acceptance criteria:
 
 ```txt
-[ ] retry count is bounded
-[ ] failure modes are documented
-[ ] queue/background processing remains deferred
-[ ] no database is added
+[x] retry count is bounded
+[x] failure modes are documented
+[x] queue/background processing remains deferred
+[x] no database is added
 ```
 
 ---
