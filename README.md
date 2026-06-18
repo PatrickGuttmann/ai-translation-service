@@ -66,8 +66,16 @@ Implemented in Phase 0.2:
 - translated field key preservation helper
 - contract tests for schemas, validation helpers and route behavior
 
+Implemented in Phase 0.3:
+
+- isolated Ollama `/api/chat` client
+- Ollama chat response schema validation
+- timeout, connection, non-2xx and invalid-response error normalization
+- mocked Ollama tests with no live model requirement
+
 Live Ollama translation is not implemented yet. The translation route currently
-validates authenticated requests and returns a placeholder response.
+validates authenticated requests and returns a placeholder response. The Ollama
+client exists but is not wired into `POST /translate` yet.
 
 Out of scope for the first version:
 
@@ -387,6 +395,18 @@ Expected authorized placeholder response:
   "status": "not_implemented"
 }
 ```
+
+---
+
+## Ollama Client
+
+The Ollama client lives under `src/ollama/` and is isolated from HTTP routes. It
+uses `OLLAMA_BASE_URL`, `OLLAMA_MODEL` and `REQUEST_TIMEOUT_MS`, calls
+`POST /api/chat` with `stream: false`, validates the provider response and
+returns only the assistant message content.
+
+Automated tests mock Ollama behavior and do not require a live Ollama model.
+Live translation through `/translate` starts in a later phase.
 
 ---
 

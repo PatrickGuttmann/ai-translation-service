@@ -253,10 +253,11 @@ Contains all Ollama-specific HTTP behavior.
 
 Responsibilities:
 
-- call Ollama `/api/chat` or `/api/generate`
+- call Ollama `/api/chat`
 - apply request timeout
 - return model output text
-- normalize provider errors
+- validate the relevant provider response shape
+- normalize provider errors, timeouts and invalid responses
 - avoid leaking full source text in logs
 
 No route should call Ollama directly.
@@ -379,6 +380,7 @@ VALIDATION_ERROR
 INPUT_TOO_LARGE
 OLLAMA_UNAVAILABLE
 OLLAMA_TIMEOUT
+OLLAMA_INVALID_RESPONSE
 MODEL_OUTPUT_INVALID
 TRANSLATION_FAILED
 INTERNAL_ERROR
@@ -520,8 +522,9 @@ extra_hosts:
 If Ollama runs in Docker, the service should connect through the Docker network
 to the Ollama container.
 
-The service remains stateless in Phase 0.2 and does not perform live Ollama
-translation yet.
+The service remains stateless in Phase 0.3. The Ollama client exists and is
+tested with mocked provider responses, but `/translate` does not call Ollama
+yet.
 
 ---
 

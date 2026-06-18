@@ -21,8 +21,8 @@ Codex to execute.
 ## Current Phase
 
 ```txt
-Phase: 0.2
-Goal: Translation Contract and Validation
+Phase: 0.3
+Goal: Ollama Client
 Status: Complete
 ```
 
@@ -625,7 +625,7 @@ Add isolated Ollama HTTP communication without mixing provider logic into routes
 ## 0.3.1 — Add Ollama Client
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: High
 ```
 
@@ -640,12 +640,12 @@ src/ollama/ollama.client.ts
 Acceptance criteria:
 
 ```txt
-[ ] client uses OLLAMA_BASE_URL
-[ ] client uses OLLAMA_MODEL
-[ ] client supports configured timeout
-[ ] client returns model output text
-[ ] provider errors are normalized
-[ ] routes do not call Ollama directly
+[x] client uses OLLAMA_BASE_URL
+[x] client uses OLLAMA_MODEL
+[x] client supports configured timeout
+[x] client returns model output text
+[x] provider errors are normalized
+[x] routes do not call Ollama directly
 ```
 
 ---
@@ -653,7 +653,7 @@ Acceptance criteria:
 ## 0.3.2 — Add Ollama Response Schema
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: Medium
 ```
 
@@ -668,9 +668,9 @@ src/ollama/ollama.schema.ts
 Acceptance criteria:
 
 ```txt
-[ ] expected Ollama response shape is parsed safely
-[ ] missing output text is handled as provider error
-[ ] unexpected provider response does not crash route handling
+[x] expected Ollama response shape is parsed safely
+[x] missing output text is handled as provider error
+[x] unexpected provider response does not crash route handling
 ```
 
 ---
@@ -678,7 +678,7 @@ Acceptance criteria:
 ## 0.3.3 — Add Mocked Ollama Tests
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: Medium
 ```
 
@@ -687,11 +687,11 @@ Test Ollama client behavior without requiring a live model.
 Acceptance criteria:
 
 ```txt
-[ ] successful mocked response returns text
-[ ] timeout is handled
-[ ] connection failure is handled
-[ ] invalid provider response is handled
-[ ] tests do not require live Ollama
+[x] successful mocked response returns text
+[x] timeout is handled
+[x] connection failure is handled
+[x] invalid provider response is handled
+[x] tests do not require live Ollama
 ```
 
 ---
