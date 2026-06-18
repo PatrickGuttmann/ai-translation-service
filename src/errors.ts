@@ -5,6 +5,7 @@ export type ErrorCode =
   | "OLLAMA_UNAVAILABLE"
   | "OLLAMA_TIMEOUT"
   | "OLLAMA_INVALID_RESPONSE"
+  | "MODEL_OUTPUT_INVALID"
   | "INTERNAL_ERROR";
 
 export type ErrorResponse = {
@@ -32,4 +33,5 @@ export const ollamaInvalidResponseErrorResponse = createErrorResponse(
   "OLLAMA_INVALID_RESPONSE",
   "Ollama response invalid"
 );
+export const modelOutputInvalidErrorResponse = createErrorResponse("MODEL_OUTPUT_INVALID", "Model output invalid");
 export const internalErrorResponse = createErrorResponse("INTERNAL_ERROR", "Internal server error");

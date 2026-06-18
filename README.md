@@ -80,9 +80,16 @@ Implemented in Phase 0.4:
 - bounded repair prompt input for invalid model output
 - prompt builder tests
 
-Live Ollama translation is not implemented yet. The translation route currently
-validates authenticated requests and returns a placeholder response. The Ollama
-client and prompt builder exist but are not wired into `POST /translate` yet.
+Implemented in Phase 0.5:
+
+- synchronous translate service
+- `POST /translate` wired to prompt builder and Ollama client
+- JSON model output parsing for `{ "fields": { ... } }`
+- translated field key validation before responding
+- mocked route/service tests for provider and model-output failures
+
+Retry and repair behavior is not implemented yet. Invalid model output currently
+returns a structured `MODEL_OUTPUT_INVALID` error.
 
 Out of scope for the first version:
 
@@ -211,7 +218,7 @@ Protected by:
 Authorization: Bearer <API_KEY>
 ```
 
-Phase 0.2 validated placeholder request:
+Translation request:
 
 ```bash
 curl -i -X POST http://localhost:4100/translate \
@@ -232,34 +239,7 @@ curl -i -X POST http://localhost:4100/translate \
   }'
 ```
 
-Phase 0.2 placeholder response:
-
-```json
-{
-  "status": "not_implemented"
-}
-```
-
-Translation request contract:
-
-```json
-{
-  "sourceLocale": "de",
-  "targetLocale": "en",
-  "contentType": "managed-page-section",
-  "fields": {
-    "title": "Kontakt",
-    "body": "Schreib mir, wenn du Fragen zu meinen Projekten hast."
-  },
-  "tone": "personal-technical",
-  "glossary": {
-    "Devlog": "Devlog",
-    "Alpendorf": "Alpendorf"
-  }
-}
-```
-
-Future translation response:
+Translation response:
 
 ```json
 {
@@ -395,25 +375,31 @@ curl -i -X POST http://localhost:4100/translate \
   }'
 ```
 
-Expected authorized placeholder response:
+Expected model output shape:
 
 ```json
 {
-  "status": "not_implemented"
+  "fields": {
+    "title": "Contact"
+  }
 }
 ```
+
+The service parses that model output, validates field keys and returns the
+`TranslateResponse` shape shown above.
 
 ---
 
 ## Ollama Client
 
-The Ollama client lives under `src/ollama/` and is isolated from HTTP routes. It
+The Ollama client lives under `src/ollama/` and is isolated from route-level HTTP
+request construction. It
 uses `OLLAMA_BASE_URL`, `OLLAMA_MODEL` and `REQUEST_TIMEOUT_MS`, calls
 `POST /api/chat` with `stream: false`, validates the provider response and
 returns only the assistant message content.
 
 Automated tests mock Ollama behavior and do not require a live Ollama model.
-Live translation through `/translate` starts in a later phase.
+`POST /translate` now uses the client through the translation service.
 
 ---
 
@@ -424,8 +410,8 @@ version-controlled code. The API does not expose arbitrary prompt editing.
 
 The prompt builder creates Ollama chat messages for normal translation and for
 repairing invalid model output. Repair prompts bound previous invalid output
-before including it. These prompts are tested, but they are not executed by
-`POST /translate` until the translation service is implemented later.
+before including it. Normal translation prompts are used by the translation
+service; repair prompts are reserved for Phase 0.6.
 
 ---
 

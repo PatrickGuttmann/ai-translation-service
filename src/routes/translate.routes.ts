@@ -1,22 +1,28 @@
 import { type FastifyInstance } from "fastify";
 
 import { type AppConfig } from "../config.js";
-import { validationErrorResponse } from "../errors.js";
+import {
+  inputTooLargeErrorResponse,
+  internalErrorResponse,
+  modelOutputInvalidErrorResponse,
+  ollamaInvalidResponseErrorResponse,
+  ollamaTimeoutErrorResponse,
+  ollamaUnavailableErrorResponse,
+  validationErrorResponse
+} from "../errors.js";
+import { OllamaClientError } from "../ollama/ollama.client.js";
 import { requireApiKey } from "../security/api-key.js";
 import { translateRequestSchema } from "../translation/translate.schema.js";
-import { validateInputLength } from "../translation/translate.validation.js";
+import { TranslateServiceError, type TranslateService } from "../translation/translate.service.js";
+import { type TranslateResponse } from "../translation/translate.types.js";
 
-export type PlaceholderTranslateResponse = {
-  status: "not_implemented";
-};
-
-export function registerTranslateRoutes(app: FastifyInstance, config: AppConfig): void {
+export function registerTranslateRoutes(app: FastifyInstance, config: AppConfig, translateService: TranslateService): void {
   app.post(
     "/translate",
     {
       preHandler: requireApiKey(config.apiKey)
     },
-    async (request, reply): Promise<PlaceholderTranslateResponse | void> => {
+    async (request, reply): Promise<TranslateResponse | void> => {
       const parsedRequest = translateRequestSchema.safeParse(request.body);
 
       if (!parsedRequest.success) {
@@ -24,16 +30,37 @@ export function registerTranslateRoutes(app: FastifyInstance, config: AppConfig)
         return;
       }
 
-      const inputLength = validateInputLength(parsedRequest.data, config.maxInputChars);
+      try {
+        return await translateService.translate(parsedRequest.data);
+      } catch (error) {
+        if (error instanceof TranslateServiceError && error.code === "INPUT_TOO_LARGE") {
+          await reply.status(413).send(inputTooLargeErrorResponse);
+          return;
+        }
 
-      if (!inputLength.ok) {
-        await reply.status(413).send(inputLength.error);
-        return;
+        if (error instanceof TranslateServiceError && error.code === "MODEL_OUTPUT_INVALID") {
+          await reply.status(502).send(modelOutputInvalidErrorResponse);
+          return;
+        }
+
+        if (error instanceof OllamaClientError) {
+          if (error.code === "OLLAMA_TIMEOUT") {
+            await reply.status(504).send(ollamaTimeoutErrorResponse);
+            return;
+          }
+
+          if (error.code === "OLLAMA_INVALID_RESPONSE") {
+            await reply.status(502).send(ollamaInvalidResponseErrorResponse);
+            return;
+          }
+
+          await reply.status(503).send(ollamaUnavailableErrorResponse);
+          return;
+        }
+
+        request.log.error({ err: error }, "Translation failed unexpectedly");
+        await reply.status(500).send(internalErrorResponse);
       }
-
-      return {
-        status: "not_implemented"
-      };
     }
   );
 }

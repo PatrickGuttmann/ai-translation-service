@@ -1,10 +1,12 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { createApp } from "../app.js";
 import { loadConfig } from "../config.js";
 import { type ErrorResponse } from "../errors.js";
+import { OllamaClientError } from "../ollama/ollama.client.js";
 import { type HealthResponse } from "./health.routes.js";
-import { type PlaceholderTranslateResponse } from "./translate.routes.js";
+import { TranslateServiceError, type TranslateService } from "../translation/translate.service.js";
+import { type TranslateResponse } from "../translation/translate.types.js";
 
 const apiKey = "TEST_SECRET";
 const validPayload = {
@@ -22,11 +24,32 @@ const validPayload = {
 };
 
 function buildTestApp() {
-  return createApp(loadConfig({ NODE_ENV: "test", API_KEY: apiKey }));
+  return createApp(loadConfig({ NODE_ENV: "test", API_KEY: apiKey }), {
+    translateService: buildMockTranslateService()
+  });
+}
+
+function buildMockTranslateService(overrides: Partial<TranslateService> = {}): TranslateService {
+  return {
+    translate:
+      overrides.translate ??
+      vi.fn(async (request): Promise<TranslateResponse> => {
+        return {
+          model: "test-model",
+          targetLocale: request.targetLocale,
+          fields: {
+            title: "Contact",
+            body: "Write to me..."
+          },
+          warnings: [],
+          durationMs: 12
+        };
+      })
+  };
 }
 
 describe("POST /translate", () => {
-  it("returns the placeholder response for authenticated requests", async () => {
+  it("returns translated fields for authenticated valid requests", async () => {
     const app = buildTestApp();
 
     const response = await app.inject({
@@ -39,8 +62,15 @@ describe("POST /translate", () => {
     });
 
     expect(response.statusCode).toBe(200);
-    expect(response.json<PlaceholderTranslateResponse>()).toEqual({
-      status: "not_implemented"
+    expect(response.json<TranslateResponse>()).toEqual({
+      model: "test-model",
+      targetLocale: "en",
+      fields: {
+        title: "Contact",
+        body: "Write to me..."
+      },
+      warnings: [],
+      durationMs: 12
     });
   });
 
@@ -88,7 +118,13 @@ describe("POST /translate", () => {
   });
 
   it("returns a structured input-too-large error for oversized authenticated payloads", async () => {
-    const app = createApp(loadConfig({ NODE_ENV: "test", API_KEY: apiKey, MAX_INPUT_CHARS: "3" }));
+    const app = createApp(loadConfig({ NODE_ENV: "test", API_KEY: apiKey }), {
+      translateService: buildMockTranslateService({
+        async translate() {
+          throw new TranslateServiceError("INPUT_TOO_LARGE", "Too large");
+        }
+      })
+    });
 
     const response = await app.inject({
       method: "POST",
@@ -109,7 +145,8 @@ describe("POST /translate", () => {
   });
 
   it("returns 401 before payload validation for unauthenticated requests", async () => {
-    const app = buildTestApp();
+    const translateService = buildMockTranslateService();
+    const app = createApp(loadConfig({ NODE_ENV: "test", API_KEY: apiKey }), { translateService });
 
     const response = await app.inject({
       method: "POST",
@@ -125,6 +162,61 @@ describe("POST /translate", () => {
       error: {
         code: "UNAUTHORIZED",
         message: "Unauthorized"
+      }
+    });
+    expect(translateService.translate).not.toHaveBeenCalled();
+  });
+
+  it("returns a structured provider error for mocked provider failure", async () => {
+    const app = createApp(loadConfig({ NODE_ENV: "test", API_KEY: apiKey }), {
+      translateService: buildMockTranslateService({
+        async translate() {
+          throw new OllamaClientError("OLLAMA_UNAVAILABLE", "Ollama unavailable");
+        }
+      })
+    });
+
+    const response = await app.inject({
+      method: "POST",
+      url: "/translate",
+      headers: {
+        authorization: `Bearer ${apiKey}`
+      },
+      payload: validPayload
+    });
+
+    expect(response.statusCode).toBe(503);
+    expect(response.json<ErrorResponse>()).toEqual({
+      error: {
+        code: "OLLAMA_UNAVAILABLE",
+        message: "Ollama unavailable"
+      }
+    });
+  });
+
+  it("returns MODEL_OUTPUT_INVALID for mocked invalid model output", async () => {
+    const app = createApp(loadConfig({ NODE_ENV: "test", API_KEY: apiKey }), {
+      translateService: buildMockTranslateService({
+        async translate() {
+          throw new TranslateServiceError("MODEL_OUTPUT_INVALID", "Invalid model output");
+        }
+      })
+    });
+
+    const response = await app.inject({
+      method: "POST",
+      url: "/translate",
+      headers: {
+        authorization: `Bearer ${apiKey}`
+      },
+      payload: validPayload
+    });
+
+    expect(response.statusCode).toBe(502);
+    expect(response.json<ErrorResponse>()).toEqual({
+      error: {
+        code: "MODEL_OUTPUT_INVALID",
+        message: "Model output invalid"
       }
     });
   });

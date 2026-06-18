@@ -21,8 +21,8 @@ Codex to execute.
 ## Current Phase
 
 ```txt
-Phase: 0.4
-Goal: Prompt Templates
+Phase: 0.5
+Goal: Real Translation Endpoint
 Status: Complete
 ```
 
@@ -790,7 +790,7 @@ Connect validation, prompt building, Ollama client and response parsing into POS
 ## 0.5.1 — Implement Translate Service
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: High
 ```
 
@@ -805,13 +805,13 @@ src/translation/translate.service.ts
 Acceptance criteria:
 
 ```txt
-[ ] validates request
-[ ] enforces input length
-[ ] builds prompt
-[ ] calls Ollama client
-[ ] parses model JSON output
-[ ] validates translated fields
-[ ] returns model, targetLocale, fields, warnings and durationMs
+[x] validates request
+[x] enforces input length
+[x] builds prompt
+[x] calls Ollama client
+[x] parses model JSON output
+[x] validates translated fields
+[x] returns model, targetLocale, fields, warnings and durationMs
 ```
 
 ---
@@ -819,7 +819,7 @@ Acceptance criteria:
 ## 0.5.2 — Wire POST /translate to Translate Service
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: High
 ```
 
@@ -828,11 +828,11 @@ Replace placeholder behavior with real translation behavior.
 Acceptance criteria:
 
 ```txt
-[ ] POST /translate accepts valid structured request
-[ ] route calls TranslateService
-[ ] successful response matches TranslateResponse schema
-[ ] invalid requests return structured validation errors
-[ ] provider failures return structured safe errors
+[x] POST /translate accepts valid structured request
+[x] route calls TranslateService
+[x] successful response matches TranslateResponse schema
+[x] invalid requests return structured validation errors
+[x] provider failures return structured safe errors
 ```
 
 ---
@@ -840,7 +840,7 @@ Acceptance criteria:
 ## 0.5.3 — Add JSON Parse Handling
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: High
 ```
 
@@ -849,10 +849,10 @@ Handle model output parsing safely.
 Acceptance criteria:
 
 ```txt
-[ ] valid JSON output is parsed
-[ ] fenced JSON output can be handled if implemented deliberately
-[ ] invalid JSON does not crash the service
-[ ] invalid JSON produces retry/repair path or structured failure
+[x] valid JSON output is parsed
+[x] fenced JSON output can be handled if implemented deliberately
+[x] invalid JSON does not crash the service
+[x] invalid JSON produces retry/repair path or structured failure
 ```
 
 ---
@@ -860,7 +860,7 @@ Acceptance criteria:
 ## 0.5.4 — Add Integration Tests with Mocked Ollama
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: High
 ```
 
@@ -869,12 +869,12 @@ Test the full translation route with mocked provider behavior.
 Acceptance criteria:
 
 ```txt
-[ ] valid request returns translated fields
-[ ] unauthenticated request returns 401
-[ ] invalid request returns validation error
-[ ] oversized request returns INPUT_TOO_LARGE
-[ ] mocked provider failure returns safe error
-[ ] live Ollama is not required
+[x] valid request returns translated fields
+[x] unauthenticated request returns 401
+[x] invalid request returns validation error
+[x] oversized request returns INPUT_TOO_LARGE
+[x] mocked provider failure returns safe error
+[x] live Ollama is not required
 ```
 
 ---

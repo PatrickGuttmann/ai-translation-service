@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { createApp } from "../app.js";
 import { loadConfig } from "../config.js";
 import { type ErrorResponse } from "../errors.js";
+import { type TranslateService } from "../translation/translate.service.js";
 
 const apiKey = "TEST_SECRET";
 const validPayload = {
@@ -15,7 +16,21 @@ const validPayload = {
 };
 
 function buildTestApp() {
-  return createApp(loadConfig({ NODE_ENV: "test", API_KEY: apiKey }));
+  const translateService: TranslateService = {
+    async translate(request) {
+      return {
+        model: "test-model",
+        targetLocale: request.targetLocale,
+        fields: {
+          title: "Contact"
+        },
+        warnings: [],
+        durationMs: 1
+      };
+    }
+  };
+
+  return createApp(loadConfig({ NODE_ENV: "test", API_KEY: apiKey }), { translateService });
 }
 
 describe("API key middleware", () => {

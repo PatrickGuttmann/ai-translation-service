@@ -2,10 +2,16 @@ import Fastify, { type FastifyInstance } from "fastify";
 
 import { type AppConfig } from "./config.js";
 import { internalErrorResponse } from "./errors.js";
+import { createOllamaClient } from "./ollama/ollama.client.js";
 import { registerHealthRoutes } from "./routes/health.routes.js";
 import { registerTranslateRoutes } from "./routes/translate.routes.js";
+import { createTranslateService, type TranslateService } from "./translation/translate.service.js";
 
-export function createApp(config: AppConfig): FastifyInstance {
+export type CreateAppOptions = {
+  translateService?: TranslateService;
+};
+
+export function createApp(config: AppConfig, options: CreateAppOptions = {}): FastifyInstance {
   const app = Fastify({
     logger:
       config.nodeEnv === "test"
@@ -23,7 +29,7 @@ export function createApp(config: AppConfig): FastifyInstance {
   });
 
   void app.register(registerHealthRoutes);
-  registerTranslateRoutes(app, config);
+  registerTranslateRoutes(app, config, options.translateService ?? createTranslateService(config, createOllamaClient(config)));
 
   return app;
 }
