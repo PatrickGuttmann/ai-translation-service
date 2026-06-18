@@ -201,12 +201,13 @@ Defines `POST /translate`.
 Responsibilities:
 
 - require API key
-- return the Phase 0.1 placeholder response
+- validate request body against the translation contract
+- enforce `MAX_INPUT_CHARS`
+- return the Phase 0.2 placeholder response
 - return structured errors
 
 Future responsibilities:
 
-- validate request body
 - call translation service
 
 ---
@@ -234,10 +235,13 @@ Responsibilities:
 
 - validate translation request/response shapes
 - calculate input size
+- validate translated field key preservation
+
+Future responsibilities:
+
 - select prompt template
 - call Ollama client
 - parse response
-- validate translated fields
 - retry repair where allowed
 - assemble warnings and duration metadata
 
@@ -316,6 +320,7 @@ Validation rules:
 - `sourceLocale` and `targetLocale` may differ
 - `fields` must be a non-empty object
 - field values must be strings
+- empty string field values are allowed
 - combined field content must not exceed `MAX_INPUT_CHARS`
 - glossary keys and values must be strings when provided
 
@@ -339,6 +344,17 @@ Validation rules:
 - every translated field value must be a string
 - no additional translated field keys are allowed
 - warnings should describe non-fatal issues
+
+In Phase 0.2, `POST /translate` validates authenticated request payloads and
+input length, then still returns:
+
+```json
+{
+  "status": "not_implemented"
+}
+```
+
+Live Ollama behavior begins in a later phase.
 
 ---
 
@@ -504,7 +520,7 @@ extra_hosts:
 If Ollama runs in Docker, the service should connect through the Docker network
 to the Ollama container.
 
-The service remains stateless in Phase 0.1 and does not perform live Ollama
+The service remains stateless in Phase 0.2 and does not perform live Ollama
 translation yet.
 
 ---

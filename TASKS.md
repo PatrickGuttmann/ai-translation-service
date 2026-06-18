@@ -21,8 +21,8 @@ Codex to execute.
 ## Current Phase
 
 ```txt
-Phase: 0.1
-Goal: Service Foundation
+Phase: 0.2
+Goal: Translation Contract and Validation
 Status: Complete
 ```
 
@@ -509,7 +509,7 @@ Define and validate the structured translation API contract before real model ca
 ## 0.2.1 — Define Translation Types and Schemas
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: High
 ```
 
@@ -536,13 +536,13 @@ glossary
 Acceptance criteria:
 
 ```txt
-[ ] sourceLocale supports de, en, th
-[ ] targetLocale supports de, en, th
-[ ] contentType supports managed-page, managed-page-section, project, devlog, generic
-[ ] fields is a non-empty record of strings
-[ ] tone is optional and bounded
-[ ] glossary is optional and string-to-string
-[ ] request type is inferred from Zod schema or kept aligned
+[x] sourceLocale supports de, en, th
+[x] targetLocale supports de, en, th
+[x] contentType supports managed-page, managed-page-section, project, devlog, generic
+[x] fields is a non-empty record of strings
+[x] tone is optional and bounded
+[x] glossary is optional and string-to-string
+[x] request type is inferred from Zod schema or kept aligned
 ```
 
 ---
@@ -550,7 +550,7 @@ Acceptance criteria:
 ## 0.2.2 — Enforce Max Input Length
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: High
 ```
 
@@ -559,11 +559,11 @@ Reject oversized translation requests before calling any model.
 Acceptance criteria:
 
 ```txt
-[ ] combined input field length is calculated
-[ ] MAX_INPUT_CHARS is enforced
-[ ] oversized input returns INPUT_TOO_LARGE
-[ ] error response is structured
-[ ] no Ollama call happens when input is too large
+[x] combined input field length is calculated
+[x] MAX_INPUT_CHARS is enforced
+[x] oversized input returns INPUT_TOO_LARGE
+[x] error response is structured
+[x] no Ollama call happens when input is too large
 ```
 
 ---
@@ -571,7 +571,7 @@ Acceptance criteria:
 ## 0.2.3 — Validate Field Key Preservation
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: High
 ```
 
@@ -580,11 +580,11 @@ Add validation helper for translated model output.
 Acceptance criteria:
 
 ```txt
-[ ] translated output must contain exactly the same keys as input
-[ ] missing keys are detected
-[ ] extra keys are detected
-[ ] non-string field values are rejected
-[ ] validation returns useful error details for retry/repair
+[x] translated output must contain exactly the same keys as input
+[x] missing keys are detected
+[x] extra keys are detected
+[x] non-string field values are rejected
+[x] validation returns useful error details for retry/repair
 ```
 
 ---
@@ -592,7 +592,7 @@ Acceptance criteria:
 ## 0.2.4 — Add Contract Tests
 
 ```txt
-Status: [ ]
+Status: [x]
 Priority: Medium
 ```
 
@@ -601,13 +601,13 @@ Add tests for schema and validation behavior.
 Acceptance criteria:
 
 ```txt
-[ ] valid translate request passes
-[ ] missing fields request fails
-[ ] unsupported locale fails
-[ ] oversized input fails
-[ ] translated missing key fails
-[ ] translated extra key fails
-[ ] translated non-string value fails
+[x] valid translate request passes
+[x] missing fields request fails
+[x] unsupported locale fails
+[x] oversized input fails
+[x] translated missing key fails
+[x] translated extra key fails
+[x] translated non-string value fails
 ```
 
 ---

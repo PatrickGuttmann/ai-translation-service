@@ -7,6 +7,19 @@ import { type HealthResponse } from "./health.routes.js";
 import { type PlaceholderTranslateResponse } from "./translate.routes.js";
 
 const apiKey = "TEST_SECRET";
+const validPayload = {
+  sourceLocale: "de",
+  targetLocale: "en",
+  contentType: "managed-page-section",
+  fields: {
+    title: "Kontakt",
+    body: "Schreib mir..."
+  },
+  tone: "personal-technical",
+  glossary: {
+    Devlog: "Devlog"
+  }
+};
 
 function buildTestApp() {
   return createApp(loadConfig({ NODE_ENV: "test", API_KEY: apiKey }));
@@ -21,7 +34,8 @@ describe("POST /translate", () => {
       url: "/translate",
       headers: {
         authorization: `Bearer ${apiKey}`
-      }
+      },
+      payload: validPayload
     });
 
     expect(response.statusCode).toBe(200);
@@ -36,6 +50,74 @@ describe("POST /translate", () => {
     const response = await app.inject({
       method: "POST",
       url: "/translate"
+    });
+
+    expect(response.statusCode).toBe(401);
+    expect(response.json<ErrorResponse>()).toEqual({
+      error: {
+        code: "UNAUTHORIZED",
+        message: "Unauthorized"
+      }
+    });
+  });
+
+  it("returns a structured validation error for authenticated invalid payloads", async () => {
+    const app = buildTestApp();
+
+    const response = await app.inject({
+      method: "POST",
+      url: "/translate",
+      headers: {
+        authorization: `Bearer ${apiKey}`
+      },
+      payload: {
+        sourceLocale: "de",
+        targetLocale: "en",
+        contentType: "managed-page-section",
+        fields: {}
+      }
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.json<ErrorResponse>()).toEqual({
+      error: {
+        code: "VALIDATION_ERROR",
+        message: "Invalid request data"
+      }
+    });
+  });
+
+  it("returns a structured input-too-large error for oversized authenticated payloads", async () => {
+    const app = createApp(loadConfig({ NODE_ENV: "test", API_KEY: apiKey, MAX_INPUT_CHARS: "3" }));
+
+    const response = await app.inject({
+      method: "POST",
+      url: "/translate",
+      headers: {
+        authorization: `Bearer ${apiKey}`
+      },
+      payload: validPayload
+    });
+
+    expect(response.statusCode).toBe(413);
+    expect(response.json<ErrorResponse>()).toEqual({
+      error: {
+        code: "INPUT_TOO_LARGE",
+        message: "Input too large"
+      }
+    });
+  });
+
+  it("returns 401 before payload validation for unauthenticated requests", async () => {
+    const app = buildTestApp();
+
+    const response = await app.inject({
+      method: "POST",
+      url: "/translate",
+      payload: {
+        sourceLocale: "fr",
+        fields: {}
+      }
     });
 
     expect(response.statusCode).toBe(401);

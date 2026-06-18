@@ -5,6 +5,14 @@ import { loadConfig } from "../config.js";
 import { type ErrorResponse } from "../errors.js";
 
 const apiKey = "TEST_SECRET";
+const validPayload = {
+  sourceLocale: "de",
+  targetLocale: "en",
+  contentType: "managed-page-section",
+  fields: {
+    title: "Kontakt"
+  }
+};
 
 function buildTestApp() {
   return createApp(loadConfig({ NODE_ENV: "test", API_KEY: apiKey }));
@@ -66,7 +74,8 @@ describe("API key middleware", () => {
       url: "/translate",
       headers: {
         authorization: `Bearer ${apiKey}`
-      }
+      },
+      payload: validPayload
     });
 
     expect(response.statusCode).toBe(200);

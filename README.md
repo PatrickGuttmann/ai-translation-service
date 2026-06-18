@@ -58,8 +58,16 @@ Implemented in Phase 0.1:
 - Vitest test baseline
 - Docker Compose runtime baseline
 
-Live Ollama translation is not implemented yet in Phase 0.1. The translation
-route currently returns a placeholder response after API key authentication.
+Implemented in Phase 0.2:
+
+- translation request and response schemas
+- request payload validation for `POST /translate`
+- max input length enforcement
+- translated field key preservation helper
+- contract tests for schemas, validation helpers and route behavior
+
+Live Ollama translation is not implemented yet. The translation route currently
+validates authenticated requests and returns a placeholder response.
 
 Out of scope for the first version:
 
@@ -188,16 +196,28 @@ Protected by:
 Authorization: Bearer <API_KEY>
 ```
 
-Phase 0.1 placeholder request:
+Phase 0.2 validated placeholder request:
 
 ```bash
 curl -i -X POST http://localhost:4100/translate \
   -H "Authorization: Bearer DEV_SECRET_CHANGE_ME" \
   -H "Content-Type: application/json" \
-  -d '{}'
+  -d '{
+    "sourceLocale": "de",
+    "targetLocale": "en",
+    "contentType": "managed-page-section",
+    "fields": {
+      "title": "Kontakt",
+      "body": "Schreib mir..."
+    },
+    "tone": "personal-technical",
+    "glossary": {
+      "Devlog": "Devlog"
+    }
+  }'
 ```
 
-Phase 0.1 placeholder response:
+Phase 0.2 placeholder response:
 
 ```json
 {
@@ -205,7 +225,7 @@ Phase 0.1 placeholder response:
 }
 ```
 
-Future translation request:
+Translation request contract:
 
 ```json
 {
@@ -250,6 +270,10 @@ Rules:
 - field keys must be preserved exactly
 - all translated values must be strings
 - response must contain exactly the same field keys as the input
+- request `fields` must be a non-empty object of string values
+- empty string field values are allowed
+- optional `glossary` must be a string-to-string object
+- combined model input length is limited by `MAX_INPUT_CHARS`
 - Markdown syntax must be preserved where possible
 - URLs, code blocks, placeholders and variable names must be preserved
 - glossary terms must be respected
@@ -346,7 +370,14 @@ Authorized placeholder translate:
 curl -i -X POST http://localhost:4100/translate \
   -H "Authorization: Bearer DEV_SECRET_CHANGE_ME" \
   -H "Content-Type: application/json" \
-  -d '{}'
+  -d '{
+    "sourceLocale": "de",
+    "targetLocale": "en",
+    "contentType": "managed-page-section",
+    "fields": {
+      "title": "Kontakt"
+    }
+  }'
 ```
 
 Expected authorized placeholder response:
