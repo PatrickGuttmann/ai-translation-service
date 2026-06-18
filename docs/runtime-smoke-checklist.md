@@ -97,12 +97,12 @@ curl -i -X POST http://localhost:4100/translate \
     "contentType": "generic",
     "fields": {
       "title": "Kontakt",
-      "body": "Schreib mir, wenn du Fragen zu meinen Projekten hast."
+      "body": "Schreib uns, wenn du Fragen zur Dokumentation hast."
     },
     "tone": "personal-technical",
     "glossary": {
-      "Devlog": "Devlog",
-      "Alpendorf": "Alpendorf"
+      "API": "API",
+      "Ollama": "Ollama"
     }
   }'
 ```
@@ -115,7 +115,7 @@ Expected successful response shape:
   "targetLocale": "en",
   "fields": {
     "title": "Contact",
-    "body": "Write to me if you have questions about my projects."
+    "body": "Write to us if you have questions about the documentation."
   },
   "warnings": [],
   "durationMs": 1234

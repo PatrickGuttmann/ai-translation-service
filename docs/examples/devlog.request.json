@@ -3,12 +3,13 @@
   "targetLocale": "en",
   "contentType": "devlog",
   "fields": {
-    "title": "Warum ich die Übersetzung ausgelagert habe",
-    "excerpt": "Der Website-Code bleibt schlank, während der Übersetzungsdienst Prompts, Modellfehler und Reparaturen kapselt.",
-    "body": "Heute habe ich die Grenze zwischen Website und KI-Service geschärft. Die Website entscheidet, was übersetzt werden darf, der Dienst kümmert sich nur um die strukturierte Übersetzung."
+    "title": "Warum die Übersetzung ausgelagert wurde",
+    "excerpt": "Der Client-Code bleibt schlank, während der Übersetzungsdienst Prompts, Modellfehler und Reparaturen kapselt.",
+    "body": "Heute wurde die Grenze zwischen Client-Anwendung und KI-Service geschärft. Die Anwendung entscheidet, was übersetzt werden darf, der Dienst kümmert sich nur um die strukturierte Übersetzung."
   },
   "tone": "personal-technical",
   "glossary": {
+    "API": "API",
     "Devlog": "Devlog",
     "KI-Service": "AI service"
   }

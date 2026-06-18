@@ -1,8 +1,8 @@
 # Service Readiness Review
 
-`ai-translation-service` is ready for website integration planning after Phase
+`ai-translation-service` is ready for client integration planning after Phase
 0.8. This review summarizes the implemented foundation and the remaining
-boundaries before `patrick-dev-site` integration work begins.
+boundaries before downstream application integration work begins.
 
 ## Implemented Phases
 
@@ -16,19 +16,19 @@ boundaries before `patrick-dev-site` integration work begins.
 - Phase 0.5: synchronous translation service wired to `POST /translate`.
 - Phase 0.6: one bounded repair retry, warning metadata and duration metadata.
 - Phase 0.7: Docker/Portainer runtime review and smoke checklist.
-- Phase 0.8: website client contract, example website payloads and readiness
+- Phase 0.8: client integration contract, example client payloads and readiness
   documentation.
 
 ## API Contract Status
 
 The integration contract is documented in
-`docs/website-client-contract.md`. `POST /translate` accepts structured fields,
+`docs/client-integration-contract.md`. `POST /translate` accepts structured fields,
 requires an internal API key and returns a validated response with translated
 fields, model name, target locale, warnings and duration.
 
-The current contract is stable enough for `patrick-dev-site` integration
-planning. Website code should still treat provider and model-output errors as
-retryable or reviewable failures rather than publication-ready content.
+The current contract is stable enough for client integration planning. Client
+code should still treat provider and model-output errors as retryable or
+reviewable failures rather than publication-ready content.
 
 ## Security Boundary
 
@@ -77,7 +77,7 @@ reachable and pulling the selected model if needed.
 - no translation memory
 - no glossary management
 - no public UI
-- no direct website integration yet
+- no direct client application integration yet
 - no automatic publishing
 - no legal text automation by default
 - one bounded repair attempt only

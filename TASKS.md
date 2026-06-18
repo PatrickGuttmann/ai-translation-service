@@ -22,7 +22,7 @@ Codex to execute.
 
 ```txt
 Phase: 0.8
-Goal: Website Integration Preparation
+Goal: Client Integration Preparation
 Status: Complete
 Initial service foundation: Integration-ready
 ```
@@ -62,7 +62,7 @@ retry/repair
 database
 queue
 public frontend
-website integration
+client integration
 ```
 
 ---
@@ -1041,26 +1041,26 @@ Acceptance criteria:
 
 ---
 
-# Phase 0.8 — Website Integration Preparation
+# Phase 0.8 — Client Integration Preparation
 
 Goal:
 
 ```txt
-Prepare the integration contract for patrick-dev-site without implementing website changes here.
+Prepare the integration contract for consuming applications without implementing client changes here.
 ```
 
 ---
 
-## 0.8.1 — Document Website Client Contract
+## 0.8.1 — Document Client Integration Contract
 
 ```txt
 Status: [x]
 Priority: High
 ```
 
-Document how `patrick-dev-site` should call the service.
+Document how a consuming application should call the service.
 
-Expected future website environment variables:
+Expected future client environment variables:
 
 ```env
 TRANSLATION_SERVICE_URL=http://ai-translation-service:4100
@@ -1074,12 +1074,12 @@ Acceptance criteria:
 [x] auth header is documented
 [x] error handling expectations are documented
 [x] machine status workflow expectation is documented
-[x] no website code is changed in this repository
+[x] no client application code is changed in this repository
 ```
 
 ---
 
-## 0.8.2 — Add Example Website Payloads
+## 0.8.2 — Add Example Client Payloads
 
 ```txt
 Status: [x]
@@ -1107,12 +1107,12 @@ Status: [x]
 Priority: Medium
 ```
 
-Review service readiness before integrating into `patrick-dev-site`.
+Review service readiness before integrating into a consuming application.
 
 Acceptance criteria:
 
 ```txt
-[x] API contract is stable enough for a website client
+[x] API contract is stable enough for a client application
 [x] security boundary is documented
 [x] model/output failure behavior is documented
 [x] tests cover mocked provider behavior

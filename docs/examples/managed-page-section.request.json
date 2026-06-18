@@ -3,12 +3,13 @@
   "targetLocale": "en",
   "contentType": "managed-page-section",
   "fields": {
-    "headline": "Wie ich arbeite",
-    "body": "Ich beginne mit dem kleinsten brauchbaren Schnitt, teste die kritischen Wege und erweitere erst dann die Oberfläche.",
-    "ctaLabel": "Projekt ansehen"
+    "headline": "Interne Werkzeuge",
+    "body": "Wir beginnen mit einem kleinen, überprüfbaren Ablauf, testen die kritischen Wege und erweitern erst danach die Oberfläche.",
+    "ctaLabel": "Dokumentation öffnen"
   },
   "tone": "personal-technical",
   "glossary": {
+    "API": "API",
     "Portainer": "Portainer",
     "Ollama": "Ollama"
   }

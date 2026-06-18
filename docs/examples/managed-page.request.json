@@ -3,13 +3,14 @@
   "targetLocale": "en",
   "contentType": "managed-page",
   "fields": {
-    "title": "Über mich",
-    "intro": "Ich baue ruhige, robuste Webanwendungen mit klarer Architektur.",
-    "metaDescription": "Ein kurzer Überblick über Patrick, seine Arbeitsweise und ausgewählte Projekte."
+    "title": "Dokumentation",
+    "intro": "Diese Seite sammelt die wichtigsten Hinweise für interne Werkzeuge und Arbeitsabläufe.",
+    "metaDescription": "Ein kurzer Überblick über Dokumentation, interne Tools und wiederkehrende Prozesse."
   },
   "tone": "personal-technical",
   "glossary": {
+    "API": "API",
     "Devlog": "Devlog",
-    "Full-Stack": "full-stack"
+    "Docker": "Docker"
   }
 }

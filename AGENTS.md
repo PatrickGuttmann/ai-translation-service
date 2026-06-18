@@ -16,8 +16,7 @@ Agents must follow this file before making changes.
 This project is an internal stateless AI translation service.
 
 It is built to translate structured text fields through a local Ollama model and
-return structured translated fields to a consuming application such as
-`patrick-dev-site`.
+return structured translated fields to a consuming application.
 
 The service is not a public website and not a general SaaS translation platform.
 
@@ -100,7 +99,7 @@ This service is responsible for:
 
 This service is not responsible for:
 
-- website database writes
+- consuming application database writes
 - translation record persistence
 - workflow state such as draft/machine/reviewed/published
 - public rendering
@@ -108,8 +107,7 @@ This service is not responsible for:
 - user authentication beyond internal API key protection
 - automatic publishing
 
-The consuming application, such as `patrick-dev-site`, owns translation records
-and review/publish decisions.
+The consuming application owns translation records and review/publish decisions.
 
 ---
 
@@ -495,8 +493,8 @@ Do not add the following unless explicitly requested:
 - generic prompt playground
 - public AI endpoint
 - external SaaS AI provider
-- automatic publication into `patrick-dev-site`
-- direct writes into the `patrick-dev-site` database
+- automatic publication into a consuming application
+- direct writes into a consuming application's database
 
 ---
 

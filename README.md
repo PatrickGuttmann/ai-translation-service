@@ -2,13 +2,13 @@
 
 Internal stateless AI translation service for structured project/content translation.
 
-This service is intended to be consumed by `patrick-dev-site` and later by other
-private tools or projects. It receives structured text fields, translates them
-through a local Ollama model and returns structured translated fields.
+This service is intended to be consumed by internal websites, APIs or content
+management tools. It receives structured text fields, translates them through a
+local Ollama model and returns structured translated fields.
 
-The service is deliberately separated from `patrick-dev-site` so the website
-does not become responsible for model orchestration, prompt handling, retries,
-timeouts or AI provider-specific behavior.
+The service is deliberately separated from consuming applications so downstream
+systems do not become responsible for model orchestration, prompt handling,
+retries, timeouts or AI provider-specific behavior.
 
 ---
 
@@ -19,10 +19,10 @@ The service translates structured content packages from one locale into another.
 Initial use case:
 
 ```txt
-patrick-dev-site admin
+content management application
   -> request machine translation for a known content entity
   -> ai-translation-service translates fields via Ollama
-  -> patrick-dev-site stores the result as machine translation
+  -> consuming application stores the result as machine translation
   -> human review is required before published status
 ```
 
@@ -97,8 +97,8 @@ Implemented in Phase 0.6:
 
 Implemented in Phase 0.8:
 
-- website client contract for future `patrick-dev-site` integration
-- example website translation payloads
+- client integration contract for future consuming applications
+- example client translation payloads
 - final service readiness review
 
 Provider failures such as timeouts and unavailable Ollama responses are not
@@ -165,9 +165,9 @@ ai-translation-service/
 ├── docker-compose.yml
 ├── docs/
 │   ├── examples/
+│   ├── client-integration-contract.md
 │   ├── runtime-smoke-checklist.md
-│   ├── service-readiness-review.md
-│   └── website-client-contract.md
+│   └── service-readiness-review.md
 ├── .env.example
 ├── README.md
 ├── ARCHITECTURE.md
@@ -423,19 +423,20 @@ queue or background worker.
 
 ---
 
-## Website Integration Docs
+## Client Integration Docs
 
-The service is ready for `patrick-dev-site` integration planning. It remains
-stateless and does not include website code.
+The service is ready for client integration planning. It remains stateless and
+does not include downstream application code.
 
 Integration references:
 
-- [docs/website-client-contract.md](docs/website-client-contract.md)
+- [docs/client-integration-contract.md](docs/client-integration-contract.md)
 - [docs/examples/](docs/examples/)
 - [docs/service-readiness-review.md](docs/service-readiness-review.md)
 
-The website should store returned fields as machine translations, preserve its
-own source freshness metadata and require human review before publishing.
+The consuming application should store returned fields as machine translations,
+preserve its own source freshness metadata and require human review before
+publishing.
 
 ---
 
@@ -588,8 +589,8 @@ curl -i -X POST http://localhost:4100/translate \
     },
     "tone": "personal-technical",
     "glossary": {
-      "Devlog": "Devlog",
-      "Alpendorf": "Alpendorf"
+      "API": "API",
+      "Ollama": "Ollama"
     }
   }'
 ```
@@ -604,7 +605,7 @@ reverse proxy.
 Example deployment shape:
 
 ```txt
-patrick-dev-site API
+internal website/API
   -> internal Docker/LAN HTTP
   -> ai-translation-service:4100
   -> Ollama
@@ -638,9 +639,9 @@ OLLAMA_BASE_URL=http://ollama:11434
 
 ---
 
-## Relationship to `patrick-dev-site`
+## Relationship To Consuming Applications
 
-`patrick-dev-site` remains responsible for:
+The consuming application remains responsible for:
 
 - source content
 - translation records
@@ -659,4 +660,11 @@ OLLAMA_BASE_URL=http://ollama:11434
 - retry/repair
 - warnings and timing metadata
 
-The service should not write into the website database.
+The service should not write into the consuming application's database.
+
+---
+
+## License
+
+Private source-visible project. No license is currently granted for reuse unless
+a license file is added later.

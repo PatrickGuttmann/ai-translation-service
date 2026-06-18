@@ -4,12 +4,12 @@
   "contentType": "managed-page-section",
   "fields": {
     "headline": "Kontakt",
-    "body": "Schreib mir, wenn du Fragen zu meinen Projekten hast oder über eine Zusammenarbeit sprechen möchtest.",
+    "body": "Schreib uns, wenn du Fragen zur Dokumentation hast oder einen internen Ablauf verbessern möchtest.",
     "ctaLabel": "Nachricht senden"
   },
   "tone": "personal-technical",
   "glossary": {
-    "Patrick": "Patrick",
+    "API": "API",
     "Devlog": "Devlog"
   }
 }

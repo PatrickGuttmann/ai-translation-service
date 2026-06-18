@@ -5,9 +5,10 @@
 `ai-translation-service` is a small internal service for structured AI-assisted
 translation.
 
-It is designed as a separate runtime from `patrick-dev-site`. The website owns
-content and translation records. This service only receives structured fields,
-translates them through Ollama and returns structured output.
+It is designed as a separate runtime from the consuming application. The
+downstream application owns content and translation records. This service only
+receives structured fields, translates them through Ollama and returns
+structured output.
 
 ---
 
@@ -32,10 +33,10 @@ The architecture should provide:
 ## High-Level Runtime Architecture
 
 ```txt
-patrick-dev-site Admin UI
+client Admin UI
    |
    v
-patrick-dev-site API
+client API
    |
    | internal HTTP + API key
    v
@@ -52,12 +53,12 @@ The public website never calls the AI service directly.
 
 ## Responsibility Split
 
-### `patrick-dev-site`
+### Consuming Application
 
 Responsible for:
 
 - source content management
-- Translation database tables
+- translation database tables
 - German source records
 - EN/TH translation records
 - workflow states: draft, machine, reviewed, published
@@ -92,7 +93,7 @@ Responsible for:
 
 Not responsible for:
 
-- website database writes
+- consuming application database writes
 - content persistence
 - translation workflow publishing
 - admin user authentication
@@ -130,9 +131,9 @@ ai-translation-service/
 ├── docker-compose.yml
 ├── docs/
 │   ├── examples/
+│   ├── client-integration-contract.md
 │   ├── runtime-smoke-checklist.md
-│   ├── service-readiness-review.md
-│   └── website-client-contract.md
+│   └── service-readiness-review.md
 ├── .env.example
 ├── README.md
 ├── ARCHITECTURE.md
@@ -437,8 +438,7 @@ Repair prompt should include:
 - the malformed output if safe and bounded
 - the instruction to return valid JSON only
 
-If repair fails, the service returns `MODEL_OUTPUT_INVALID` or
-`TRANSLATION_FAILED`.
+If repair fails, the service returns `MODEL_OUTPUT_INVALID`.
 
 ---
 
@@ -448,7 +448,7 @@ The service should not use a database in the first version.
 
 Reasons:
 
-- `patrick-dev-site` already owns translation records
+- the consuming application already owns translation records
 - workflow state belongs to the consuming application
 - stateless requests are simpler to test and deploy
 - retry/queue persistence can be added later only if needed
@@ -540,12 +540,12 @@ Runtime smoke checks are documented in `docs/runtime-smoke-checklist.md`.
 Live Ollama checks are manual runtime checks; automated tests use mocked
 provider behavior.
 
-Website integration planning is documented in
-`docs/website-client-contract.md`, with example request payloads under
+Client integration planning is documented in
+`docs/client-integration-contract.md`, with example request payloads under
 `docs/examples/` and readiness notes in `docs/service-readiness-review.md`.
 The service remains stateless and integration-ready: it returns translated
-fields to the caller but does not store data, mutate website records or publish
-content.
+fields to the caller but does not store data, mutate downstream records or
+publish content.
 
 ---
 
@@ -581,9 +581,9 @@ Live Ollama smoke checks may exist as manual local commands only.
 
 ---
 
-## Integration with `patrick-dev-site`
+## Integration With Client Applications
 
-Expected future environment variables in `patrick-dev-site`:
+Expected client application environment variables:
 
 ```env
 TRANSLATION_SERVICE_URL=http://ai-translation-service:4100
@@ -594,12 +594,12 @@ Expected future API flow:
 
 ```txt
 Admin clicks "Generate Translation"
-  -> patrick-dev-site API validates source entity and target locale
-  -> patrick-dev-site API calls ai-translation-service
+  -> client API validates source entity and target locale
+  -> client API calls ai-translation-service
   -> service returns translated fields
-  -> patrick-dev-site stores record as machine
+  -> client application stores record as machine
   -> admin reviews
   -> admin sets reviewed/published when acceptable
 ```
 
-The website must not publish machine output automatically.
+The consuming application must not publish machine output automatically.

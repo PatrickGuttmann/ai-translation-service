@@ -1,12 +1,12 @@
-# Website Client Contract
+# Client Integration Contract
 
-This document describes how `patrick-dev-site` should call
+This document describes how an internal client application should call
 `ai-translation-service`. It is an integration contract only; this repository
-does not contain website code.
+does not contain downstream application code.
 
-## Website Environment
+## Client Environment
 
-Expected future `patrick-dev-site` environment variables:
+Expected client application environment variables:
 
 ```env
 TRANSLATION_SERVICE_URL=http://ai-translation-service:4100
@@ -79,7 +79,7 @@ Example:
   "targetLocale": "en",
   "fields": {
     "title": "Contact",
-    "body": "Write to me if you have questions about my projects."
+    "body": "Write to us if you have questions about the documentation."
   },
   "warnings": [],
   "durationMs": 12400
@@ -115,10 +115,10 @@ MODEL_OUTPUT_INVALID
 INTERNAL_ERROR
 ```
 
-Recommended website handling:
+Recommended client handling:
 
 - `UNAUTHORIZED`: treat as an integration configuration problem.
-- `VALIDATION_ERROR`: inspect the website-side payload builder.
+- `VALIDATION_ERROR`: inspect the client-side payload builder.
 - `INPUT_TOO_LARGE`: reduce selected fields or defer to a smaller request.
 - `OLLAMA_UNAVAILABLE`: show retryable provider-unavailable feedback.
 - `OLLAMA_TIMEOUT`: show retryable timeout feedback.
@@ -126,9 +126,9 @@ Recommended website handling:
 - `MODEL_OUTPUT_INVALID`: show model-output failure feedback for manual retry.
 - `INTERNAL_ERROR`: show generic failure feedback and inspect service logs.
 
-## Website Responsibilities
+## Client Responsibilities
 
-`patrick-dev-site` is responsible for:
+The consuming application is responsible for:
 
 - selecting the German source entity and fields
 - sending only translatable text fields
@@ -156,5 +156,5 @@ explicit review workflow exists.
 - returning structured success or error responses
 - not storing request or response data
 
-The service does not write to the website database and does not decide workflow
-states.
+The service does not write to the consuming application's database and does not
+decide workflow states.
