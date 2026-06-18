@@ -53,7 +53,12 @@ export function createOllamaClient(config: AppConfig, options: OllamaClientOptio
           body: JSON.stringify({
             model: config.ollamaModel,
             messages,
-            stream: false
+            stream: false,
+            options: {
+              temperature: config.ollamaTemperature,
+              top_p: config.ollamaTopP,
+              repeat_penalty: config.ollamaRepeatPenalty
+            }
           }),
           signal: controller.signal
         });

@@ -81,5 +81,25 @@ OLLAMA_MODEL=qwen2.5:7b
 
 as the fast fallback when lower latency and JSON stability matter more.
 
+## Deterministic Defaults
+
+Phase 1.0 adds internal Ollama generation defaults:
+
+```env
+OLLAMA_TEMPERATURE=0.1
+OLLAMA_TOP_P=0.8
+OLLAMA_REPEAT_PENALTY=1.05
+```
+
+These settings prefer lower randomness for translation drafts. Repeated runtime
+requests with `aya-expanse:8b` produced semantically similar but varied English
+wording, including variants such as `public US calls`, `public U.S. calls`,
+`public requests` and `public expectations`.
+
+The goal is not perfect legal or news translation. The goal is more stable
+machine drafts for human review. Lower temperature should reduce variation, but
+identical output is not guaranteed across all models, Ollama versions or
+runtime environments.
+
 These recommendations should be revisited with the target deployment hardware,
 typical payloads, and actual review feedback from translated drafts.

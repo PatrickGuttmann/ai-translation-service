@@ -183,6 +183,9 @@ PORT
 API_KEY
 OLLAMA_BASE_URL
 OLLAMA_MODEL
+OLLAMA_TEMPERATURE
+OLLAMA_TOP_P
+OLLAMA_REPEAT_PENALTY
 REQUEST_TIMEOUT_MS
 MAX_INPUT_CHARS
 LOG_LEVEL
@@ -255,6 +258,7 @@ Contains all Ollama-specific HTTP behavior.
 Responsibilities:
 
 - call Ollama `/api/chat`
+- send server-configured generation options to Ollama
 - apply request timeout
 - return model output text
 - validate the relevant provider response shape
@@ -549,6 +553,10 @@ Prompt-quality findings from manual model tests are documented in
 `docs/model-evaluation-notes.md`. Current empirical guidance is
 `aya-expanse:8b` for better translation quality and `qwen2.5:7b` as a fast
 fallback. These notes do not change the API contract or service boundary.
+
+Deterministic generation defaults are controlled by service environment
+configuration and sent to Ollama as internal `options`. The public `/translate`
+API does not expose arbitrary model options.
 
 Client integration planning is documented in
 `docs/client-integration-contract.md`, with example request payloads under

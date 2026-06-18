@@ -35,6 +35,9 @@ Edit `.env`:
 
 ```env
 API_KEY=replace-with-a-private-internal-secret
+OLLAMA_TEMPERATURE=0.1
+OLLAMA_TOP_P=0.8
+OLLAMA_REPEAT_PENALTY=1.05
 ```
 
 Do not commit `.env`.

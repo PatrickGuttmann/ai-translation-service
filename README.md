@@ -107,6 +107,12 @@ Implemented in Phase 0.9:
 - tone guidance refinement
 - runtime model evaluation notes
 
+Implemented in Phase 1.0:
+
+- server-side deterministic Ollama generation defaults
+- config validation for generation options
+- mocked Ollama payload tests for generation options
+
 Provider failures such as timeouts and unavailable Ollama responses are not
 repair-retried. Invalid model output returns `MODEL_OUTPUT_INVALID` if the one
 repair attempt also fails.
@@ -339,6 +345,9 @@ API_KEY=DEV_SECRET_CHANGE_ME
 
 OLLAMA_BASE_URL=http://host.docker.internal:11434
 OLLAMA_MODEL=qwen2.5:7b
+OLLAMA_TEMPERATURE=0.1
+OLLAMA_TOP_P=0.8
+OLLAMA_REPEAT_PENALTY=1.05
 
 REQUEST_TIMEOUT_MS=60000
 MAX_INPUT_CHARS=12000
@@ -350,6 +359,10 @@ Never commit real secrets.
 
 Production or LAN deployments should provide secrets through Portainer
 environment variables or another private environment source.
+
+`OLLAMA_TEMPERATURE`, `OLLAMA_TOP_P` and `OLLAMA_REPEAT_PENALTY` are internal
+server-side generation defaults. They are sent to Ollama to reduce translation
+variation and are not exposed in the public `/translate` request body.
 
 ---
 
@@ -452,9 +465,9 @@ publishing.
 
 The Ollama client lives under `src/ollama/` and is isolated from route-level HTTP
 request construction. It
-uses `OLLAMA_BASE_URL`, `OLLAMA_MODEL` and `REQUEST_TIMEOUT_MS`, calls
-`POST /api/chat` with `stream: false`, validates the provider response and
-returns only the assistant message content.
+uses `OLLAMA_BASE_URL`, `OLLAMA_MODEL`, deterministic generation options and
+`REQUEST_TIMEOUT_MS`, calls `POST /api/chat` with `stream: false`, validates the
+provider response and returns only the assistant message content.
 
 Automated tests mock Ollama behavior and do not require a live Ollama model.
 `POST /translate` now uses the client through the translation service.

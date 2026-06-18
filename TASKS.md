@@ -21,8 +21,8 @@ Codex to execute.
 ## Current Phase
 
 ```txt
-Phase: 0.9
-Goal: Translation Quality Prompt Refinement
+Phase: 1.0
+Goal: Deterministic Translation Options
 Status: Complete
 Initial service foundation: Integration-ready
 ```
@@ -1237,4 +1237,124 @@ Acceptance criteria:
 [x] no API, schema or runtime architecture change was made
 [x] tests pass
 [x] automated tests do not require live Ollama
+```
+
+---
+
+# Phase 1.0 — Deterministic Translation Options
+
+Goal:
+
+```txt
+Reduce translation variation by sending deterministic server-side Ollama generation options without changing the public API contract.
+```
+
+---
+
+## 1.0.1 — Plan Deterministic Ollama Options
+
+```txt
+Status: [x]
+Priority: Medium
+```
+
+Acceptance criteria:
+
+```txt
+[x] current variability is documented
+[x] desired defaults are defined
+[x] API contract remains unchanged
+```
+
+---
+
+## 1.0.2 — Add Generation Option Config
+
+```txt
+Status: [x]
+Priority: High
+```
+
+Acceptance criteria:
+
+```txt
+[x] OLLAMA_TEMPERATURE is environment-backed and validated
+[x] OLLAMA_TOP_P is environment-backed and validated
+[x] OLLAMA_REPEAT_PENALTY is environment-backed and validated
+[x] safe deterministic defaults are provided
+[x] .env.example is updated
+```
+
+---
+
+## 1.0.3 — Send Options to Ollama
+
+```txt
+Status: [x]
+Priority: High
+```
+
+Acceptance criteria:
+
+```txt
+[x] Ollama /api/chat payload includes options
+[x] stream remains false
+[x] configured model is still used
+[x] route/API shape remains unchanged
+[x] options remain internal server-side settings
+```
+
+---
+
+## 1.0.4 — Add Deterministic Option Tests
+
+```txt
+Status: [x]
+Priority: High
+```
+
+Acceptance criteria:
+
+```txt
+[x] config defaults are tested
+[x] env override parsing is tested
+[x] invalid numeric config is tested
+[x] Ollama client sends options
+[x] existing mocked provider behavior remains unchanged
+```
+
+---
+
+## 1.0.5 — Document Deterministic Runtime Behavior
+
+```txt
+Status: [x]
+Priority: Medium
+```
+
+Acceptance criteria:
+
+```txt
+[x] model evaluation notes document deterministic defaults
+[x] README documents internal generation options
+[x] ARCHITECTURE documents service-owned generation options
+[x] variation reduction is documented without guaranteeing identical output
+```
+
+---
+
+## 1.0.6 — Final Determinism Review
+
+```txt
+Status: [x]
+Priority: Medium
+```
+
+Acceptance criteria:
+
+```txt
+[x] tests pass
+[x] API contract is unchanged
+[x] automated tests do not require live Ollama
+[x] no database or queue was added
 ```

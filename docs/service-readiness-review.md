@@ -20,6 +20,7 @@ boundaries before downstream application integration work begins.
   documentation.
 - Phase 0.9: prompt-quality refinement, tone guidance refinement and runtime
   model evaluation notes.
+- Phase 1.0: internal deterministic Ollama generation options and tests.
 
 ## API Contract Status
 
@@ -66,6 +67,10 @@ can shape wording without changing facts.
 Manual model-quality findings are documented in
 `docs/model-evaluation-notes.md`. Current empirical guidance is
 `aya-expanse:8b` for quality and `qwen2.5:7b` as a faster fallback.
+
+Internal generation options now default to lower-randomness values to reduce
+translation variation. They are service configuration only and do not change the
+public `/translate` contract.
 
 ## Test Coverage Status
 

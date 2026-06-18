@@ -19,6 +19,9 @@ function buildConfig() {
     NODE_ENV: "test",
     OLLAMA_BASE_URL: "http://ollama.test:11434",
     OLLAMA_MODEL: "test-model",
+    OLLAMA_TEMPERATURE: "0.2",
+    OLLAMA_TOP_P: "0.7",
+    OLLAMA_REPEAT_PENALTY: "1.1",
     REQUEST_TIMEOUT_MS: "10"
   });
 }
@@ -72,7 +75,12 @@ describe("createOllamaClient", () => {
     expect(body).toMatchObject({
       model: "test-model",
       messages,
-      stream: false
+      stream: false,
+      options: {
+        temperature: 0.2,
+        top_p: 0.7,
+        repeat_penalty: 1.1
+      }
     });
   });
 

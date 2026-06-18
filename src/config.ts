@@ -6,6 +6,9 @@ const envSchema = z.object({
   API_KEY: z.string().min(1, "API_KEY must not be empty").default("DEV_SECRET_CHANGE_ME"),
   OLLAMA_BASE_URL: z.string().url().default("http://localhost:11434"),
   OLLAMA_MODEL: z.string().min(1, "OLLAMA_MODEL must not be empty").default("qwen2.5:7b"),
+  OLLAMA_TEMPERATURE: z.coerce.number().min(0).max(2).default(0.1),
+  OLLAMA_TOP_P: z.coerce.number().min(0).max(1).default(0.8),
+  OLLAMA_REPEAT_PENALTY: z.coerce.number().min(0.5).max(2).default(1.05),
   REQUEST_TIMEOUT_MS: z.coerce.number().int().positive().default(60000),
   MAX_INPUT_CHARS: z.coerce.number().int().positive().default(12000),
   LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"]).default("info")
@@ -17,6 +20,9 @@ export type AppConfig = {
   apiKey: string;
   ollamaBaseUrl: string;
   ollamaModel: string;
+  ollamaTemperature: number;
+  ollamaTopP: number;
+  ollamaRepeatPenalty: number;
   requestTimeoutMs: number;
   maxInputChars: number;
   logLevel: "fatal" | "error" | "warn" | "info" | "debug" | "trace" | "silent";
@@ -39,6 +45,9 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     apiKey: parsed.data.API_KEY,
     ollamaBaseUrl: parsed.data.OLLAMA_BASE_URL,
     ollamaModel: parsed.data.OLLAMA_MODEL,
+    ollamaTemperature: parsed.data.OLLAMA_TEMPERATURE,
+    ollamaTopP: parsed.data.OLLAMA_TOP_P,
+    ollamaRepeatPenalty: parsed.data.OLLAMA_REPEAT_PENALTY,
     requestTimeoutMs: parsed.data.REQUEST_TIMEOUT_MS,
     maxInputChars: parsed.data.MAX_INPUT_CHARS,
     logLevel: parsed.data.LOG_LEVEL
